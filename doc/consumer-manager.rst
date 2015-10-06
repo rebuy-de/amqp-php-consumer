@@ -1,4 +1,4 @@
-Create and Configure the Consumer Manager
+Create and Configure the ConsumerManager
 =========================================
 
 The consumer manager is responsible for registering a consumer and starting the consuming process.
@@ -6,7 +6,7 @@ The consumer manager is responsible for registering a consumer and starting the 
 Create AMQP Connection
 ----------------------
 
-You need to create an AMQP connection with an AMQP channel which will then be used by the manager::
+You need to create an AMQP connection with an AMQP channel which will then be used by the comsuner manager::
 
     $connection = new PhpAmqpLib\Connection\AMQPSocketConnection('localhost', 5672, 'username', 'password');
     $channel = $connection->channel();
@@ -47,9 +47,9 @@ the message::
 Tying it all together
 ---------------------
 
-We have now everything we need to create the manager, register consumers and start the consuming process::
+We have now everything we need to create the consumer manager, register consumers and start the consuming process::
 
-    $manager = new Rebuy\Amqp\Consumer\Manager($channel, $exchangeName, $serializer, $parser);
+    $manager = new Rebuy\Amqp\Consumer\ConsumerManager($channel, $exchangeName, $serializer, $parser);
     $manager->registerConsumer(new MyConsumer());
 
     $manager->wait()

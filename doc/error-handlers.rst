@@ -7,7 +7,7 @@ interface only requires one method ``handle(ConsumerContainerException $ex)``.
 
 An error handler can be registered in the following way::
 
-    $manager = new Rebuy\Amqp\Consumer\Manager(...);
+    $manager = new Rebuy\Amqp\Consumer\ConsumerManager(...);
     $manager->registerErrorHandler(new MyErrorHandler());
 
 

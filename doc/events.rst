@@ -13,7 +13,7 @@ to create a subsriber/listener, add it to the event dispatcher and set the dispa
     $dispatcher->addListener(Rebuy\Amqp\Consumer\ManagerEvents::PRE_CONSUME, $myListener);
     $dispatcher->addSubscriber(new MySubscriber());
 
-    $manager = new Rebuy\Amqp\Consumer\Manager(...);
+    $manager = new Rebuy\Amqp\Consumer\ConsumerManager(...);
     $manager->setEventDispatcher($dispatcher);
 
 Implemented Subscriber
