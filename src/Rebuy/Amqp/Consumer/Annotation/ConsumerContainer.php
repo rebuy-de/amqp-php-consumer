@@ -50,8 +50,8 @@ class ConsumerContainer
         if ($this->method->getNumberOfParameters() != 1) {
             return [];
         }
-
-        if (null === $class = $this->method->getParameters()[0]->getClass()) {
+        $class = $this->method->getParameters()[0]->getClass();
+        if (null === $class) {
             return [];
         }
 
