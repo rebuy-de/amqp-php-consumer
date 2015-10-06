@@ -14,7 +14,6 @@ Features
 * Deserialize AMQP messages with the [jms/serializer](http://jmsyst.com/libs/serializer)
 * Register error handlers
 * Register pre and post consume events
-* Send messages to AMQP
 
 Documentation
 -------------
