@@ -8,7 +8,7 @@ use PhpAmqpLib\Wire\AMQPTable;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
-use Rebuy\Amqp\Consumer\Client;
+use Rebuy\Amqp\Consumer\ClientInterface;
 use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 use Rebuy\Amqp\Consumer\Handler\RequeuerHandler;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
@@ -23,7 +23,7 @@ class RequeuerHandlerTest extends \PHPUnit_Framework_TestCase
     private $consumerContainer;
 
     /**
-     * @var ObjectProphecy|Client
+     * @var ObjectProphecy|ClientInterface
      */
     private $client;
 
@@ -34,7 +34,7 @@ class RequeuerHandlerTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->client = $this->prophesize(Client::class);
+        $this->client = $this->prophesize(ClientInterface::class);
         $this->handler = new RequeuerHandler($this->client->reveal());
 
         $this->consumerContainer = $this->prophesize(ConsumerContainer::class);

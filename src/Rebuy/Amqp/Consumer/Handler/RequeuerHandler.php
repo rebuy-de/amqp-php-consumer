@@ -4,20 +4,20 @@ namespace Rebuy\Amqp\Consumer\Handler;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
-use Rebuy\Amqp\Consumer\Client;
+use Rebuy\Amqp\Consumer\ClientInterface;
 use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 
 class RequeuerHandler implements ErrorHandlerInterface
 {
     /**
-     * @var Client
+     * @var ClientInterface
      */
     private $client;
 
     /**
-     * @param Client $client
+     * @param ClientInterface $client
      */
-    public function __construct(Client $client)
+    public function __construct(ClientInterface $client)
     {
         $this->client = $client;
     }
