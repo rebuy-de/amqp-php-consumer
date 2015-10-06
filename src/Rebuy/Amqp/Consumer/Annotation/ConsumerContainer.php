@@ -30,7 +30,7 @@ class ConsumerContainer
 
     /**
      * @param string $prefix
-     * @param mixed $obj
+     * @param object $obj
      * @param ReflectionMethod $method
      * @param Consumer $annotation
      */
@@ -43,13 +43,14 @@ class ConsumerContainer
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getBindings()
     {
         if ($this->method->getNumberOfParameters() != 1) {
             return [];
         }
+
         $class = $this->method->getParameters()[0]->getClass();
         if (null === $class) {
             return [];

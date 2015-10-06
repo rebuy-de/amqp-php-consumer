@@ -14,6 +14,7 @@ class Parser
      * @var Reader
      */
     private $reader;
+
     /**
      * @var string
      */

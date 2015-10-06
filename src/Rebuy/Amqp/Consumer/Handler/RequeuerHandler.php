@@ -22,6 +22,9 @@ class RequeuerHandler implements ErrorHandlerInterface
         $this->client = $client;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function handle(ConsumerContainerException $ex)
     {
         $genericMessage = $ex->getPayloadMessage();

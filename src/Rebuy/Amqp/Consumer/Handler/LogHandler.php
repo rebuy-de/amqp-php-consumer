@@ -22,6 +22,9 @@ class LogHandler implements ErrorHandlerInterface
         $this->logger = $logger;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function handle(ConsumerContainerException $ex)
     {
         $messageClass = $ex->getConsumerContainer()->getMessageClass();
