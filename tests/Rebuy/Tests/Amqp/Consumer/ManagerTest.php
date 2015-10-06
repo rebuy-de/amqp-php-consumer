@@ -9,7 +9,7 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Annotation\Parser;
-use Rebuy\Amqp\Consumer\Manager;
+use Rebuy\Amqp\Consumer\ConsumerManager;
 use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -18,7 +18,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
     const EXCHANGE_NAME = 'exchange';
 
     /**
-     * @var Manager
+     * @var ConsumerManager
      */
     private $manager;
 
@@ -49,7 +49,7 @@ class ManagerTest extends PHPUnit_Framework_TestCase
         $this->eventDispatcher = $this->prophesize(EventDispatcherInterface::class);
         $this->parser = $this->prophesize(Parser::class);
 
-        $this->manager = new Manager(
+        $this->manager = new ConsumerManager(
             $this->channel->reveal(),
             self::EXCHANGE_NAME,
             $this->serializer->reveal(),

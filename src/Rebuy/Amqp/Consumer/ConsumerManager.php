@@ -17,7 +17,7 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class Manager
+class ConsumerManager
 {
     const DEFAULT_IDLE_TIMEOUT = 900;
 
@@ -112,8 +112,6 @@ class Manager
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
-
-        return $this;
     }
 
     /**
