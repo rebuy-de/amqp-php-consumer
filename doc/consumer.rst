@@ -10,9 +10,9 @@ First of all, you have to create a PHP class which represents this message::
     namespace My\Consumer;
 
     use JMS\Serializer\Annotation\Type;
-    use Rebuy\Amqp\Consumer\Message\GenericMessage;
+    use Rebuy\Amqp\Consumer\Message\MessageInterface;
 
-    class OrderCreatedMessage implements GenericMessage
+    class OrderCreatedMessage implements MessageInterface
     {
         /**
          * @Type("integer")
