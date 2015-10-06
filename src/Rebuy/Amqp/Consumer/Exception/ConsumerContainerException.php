@@ -5,13 +5,13 @@ namespace Rebuy\Amqp\Consumer\Exception;
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
-use Rebuy\Amqp\Consumer\Message\GenericMessage;
+use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use RuntimeException;
 
 class ConsumerContainerException extends RuntimeException
 {
     /**
-     * @var GenericMessage
+     * @var MessageInterface
      */
     private $payloadMessage;
 
@@ -28,13 +28,13 @@ class ConsumerContainerException extends RuntimeException
     /**
      * @param ConsumerContainer $consumerContainer
      * @param AMQPMessage $amqpMessage
-     * @param GenericMessage $payloadMessage
+     * @param MessageInterface $payloadMessage
      * @param Exception $e
      */
     public function __construct(
         ConsumerContainer $consumerContainer,
         AMQPMessage $amqpMessage,
-        GenericMessage $payloadMessage,
+        MessageInterface $payloadMessage,
         Exception $e
     )
     {
@@ -54,7 +54,7 @@ class ConsumerContainerException extends RuntimeException
     }
 
     /**
-     * @return GenericMessage
+     * @return MessageInterface
      */
     public function getPayloadMessage()
     {

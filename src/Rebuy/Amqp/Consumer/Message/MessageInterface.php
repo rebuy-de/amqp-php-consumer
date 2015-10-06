@@ -2,7 +2,7 @@
 
 namespace Rebuy\Amqp\Consumer\Message;
 
-interface GenericMessage
+interface MessageInterface
 {
     /**
      * @return string

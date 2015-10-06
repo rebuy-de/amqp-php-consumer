@@ -4,7 +4,7 @@ namespace Rebuy\Amqp\Consumer\Annotation;
 
 use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
-use Rebuy\Amqp\Consumer\Message\GenericMessage;
+use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -63,8 +63,8 @@ class Parser
         }
 
         $parameter = $method->getParameters()[0];
-        if (null === $parameter->getClass() || !$parameter->getClass()->implementsInterface(GenericMessage::class)) {
-            throw new InvalidArgumentException('A @Consumer\'s parameter must implement ' . GenericMessage::class);
+        if (null === $parameter->getClass() || !$parameter->getClass()->implementsInterface(MessageInterface::class)) {
+            throw new InvalidArgumentException('A @Consumer\'s parameter must implement ' . MessageInterface::class);
         }
     }
 }

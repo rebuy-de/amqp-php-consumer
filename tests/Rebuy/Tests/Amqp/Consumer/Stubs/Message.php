@@ -2,9 +2,9 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Stubs;
 
-use Rebuy\Amqp\Consumer\Message\GenericMessage;
+use Rebuy\Amqp\Consumer\Message\MessageInterface;
 
-class Message implements GenericMessage
+class Message implements MessageInterface
 {
     public static function getName()
     {

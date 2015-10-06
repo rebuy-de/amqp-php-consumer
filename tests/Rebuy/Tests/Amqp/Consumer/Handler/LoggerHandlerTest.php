@@ -10,7 +10,7 @@ use Psr\Log\LoggerInterface;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 use Rebuy\Amqp\Consumer\Handler\LogHandler;
-use Rebuy\Amqp\Consumer\Message\GenericMessage;
+use Rebuy\Amqp\Consumer\Message\MessageInterface;
 
 class LoggerHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -46,7 +46,7 @@ class LoggerHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $exceptionMessage = "Fatal error";
         $baseException = new Exception($exceptionMessage);
-        $payloadMessage = $this->prophesize(GenericMessage::class);
+        $payloadMessage = $this->prophesize(MessageInterface::class);
 
         $exception = new ConsumerContainerException(
             $this->consumerContainer->reveal(),

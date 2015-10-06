@@ -3,7 +3,7 @@
 namespace Rebuy\Amqp\Consumer\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
-use Rebuy\Amqp\Consumer\Message\GenericMessage;
+use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use ReflectionMethod;
 
 class ConsumerContainer
@@ -55,7 +55,7 @@ class ConsumerContainer
             return [];
         }
 
-        if (!$class->implementsInterface(GenericMessage::class)) {
+        if (!$class->implementsInterface(MessageInterface::class)) {
             return [];
         }
 
