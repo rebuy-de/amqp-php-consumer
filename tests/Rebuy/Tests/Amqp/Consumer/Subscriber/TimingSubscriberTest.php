@@ -6,7 +6,7 @@ use League\StatsD\Client;
 use PhpAmqpLib\Message\AMQPMessage;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
-use Rebuy\Amqp\Consumer\ConsumeEvent;
+use Rebuy\Amqp\Consumer\ConsumerEvent;
 use Rebuy\Amqp\Consumer\Subscriber\TimingSubscriber;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
@@ -50,7 +50,7 @@ class TimingSubscriberTest extends \PHPUnit_Framework_TestCase
 
         $container = $this->prophesize(ConsumerContainer::class);
         $container->getConsumerName()->willReturn($consumerName);
-        $args = new ConsumeEvent($message, $container->reveal());
+        $args = new ConsumerEvent($message, $container->reveal());
 
         $event = $this->prophesize(StopwatchEvent::class);
         $event->getDuration()->willReturn($timing);

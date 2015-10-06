@@ -179,12 +179,12 @@ class ConsumerManager
      */
     private function consume(ConsumerContainer $container, AMQPMessage $message)
     {
-        $eventArgs = new ConsumeEvent($message, $container);
-        $this->dispatchEvent(ManagerEvents::PRE_CONSUME, $eventArgs);
+        $eventArgs = new ConsumerEvent($message, $container);
+        $this->dispatchEvent(ConsumerEvents::PRE_CONSUME, $eventArgs);
 
         $result = $this->invoke($container, $message);
 
-        $this->dispatchEvent(ManagerEvents::POST_CONSUME, $eventArgs);
+        $this->dispatchEvent(ConsumerEvents::POST_CONSUME, $eventArgs);
 
         return $result;
     }

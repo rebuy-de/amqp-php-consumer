@@ -7,7 +7,7 @@ use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
-use Rebuy\Amqp\Consumer\ConsumeEvent;
+use Rebuy\Amqp\Consumer\ConsumerEvent;
 use Rebuy\Amqp\Consumer\Subscriber\LogSubscriber;
 
 class LogSubscriberTest extends \PHPUnit_Framework_TestCase
@@ -41,7 +41,7 @@ class LogSubscriberTest extends \PHPUnit_Framework_TestCase
         $consumerContainer->getMessageName()->willReturn($messageName);
         $consumerContainer->getMethodName()->willReturn($methodName);
 
-        $event = new ConsumeEvent(new AMQPMessage($body), $consumerContainer->reveal());
+        $event = new ConsumerEvent(new AMQPMessage($body), $consumerContainer->reveal());
         $this->subscriber->preConsume($event);
 
         $this->logger->debug(Argument::allOf(

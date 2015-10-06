@@ -3,8 +3,8 @@
 namespace Rebuy\Amqp\Consumer\Subscriber;
 
 use Psr\Log\LoggerInterface;
-use Rebuy\Amqp\Consumer\ConsumeEvent;
-use Rebuy\Amqp\Consumer\ManagerEvents;
+use Rebuy\Amqp\Consumer\ConsumerEvent;
+use Rebuy\Amqp\Consumer\ConsumerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class LogSubscriber implements EventSubscriberInterface
@@ -28,14 +28,14 @@ class LogSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ManagerEvents::PRE_CONSUME => 'preConsume',
+            ConsumerEvents::PRE_CONSUME => 'preConsume',
         ];
     }
 
     /**
-     * @param ConsumeEvent $event
+     * @param ConsumerEvent $event
      */
-    public function preConsume(ConsumeEvent $event)
+    public function preConsume(ConsumerEvent $event)
     {
         $container = $event->getConsumerContainer();
         $message = sprintf(

@@ -6,7 +6,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Symfony\Component\EventDispatcher\Event;
 
-class ConsumeEvent extends Event
+class ConsumerEvent extends Event
 {
     /**
      * @var AMQPMessage

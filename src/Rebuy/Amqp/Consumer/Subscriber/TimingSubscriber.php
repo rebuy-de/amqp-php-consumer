@@ -3,8 +3,8 @@
 namespace Rebuy\Amqp\Consumer\Subscriber;
 
 use League\StatsD\Client;
-use Rebuy\Amqp\Consumer\ConsumeEvent;
-use Rebuy\Amqp\Consumer\ManagerEvents;
+use Rebuy\Amqp\Consumer\ConsumerEvent;
+use Rebuy\Amqp\Consumer\ConsumerEvents;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Stopwatch\Stopwatch;
 
@@ -36,15 +36,15 @@ class TimingSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            ManagerEvents::POST_CONSUME => 'postConsume',
-            ManagerEvents::PRE_CONSUME => 'preConsume',
+            ConsumerEvents::POST_CONSUME => 'postConsume',
+            ConsumerEvents::PRE_CONSUME => 'preConsume',
         ];
     }
 
     /**
-     * @param ConsumeEvent $args
+     * @param ConsumerEvent $args
      */
-    public function preConsume(ConsumeEvent $args)
+    public function preConsume(ConsumerEvent $args)
     {
         $eventName = $this->getEventName($args);
 
@@ -52,9 +52,9 @@ class TimingSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ConsumeEvent $args
+     * @param ConsumerEvent $args
      */
-    public function postConsume(ConsumeEvent $args)
+    public function postConsume(ConsumerEvent $args)
     {
         $consumerName = $args->getConsumerContainer()->getConsumerName();
         $event = $this->stopwatch->stop($this->getEventName($args));
@@ -63,11 +63,11 @@ class TimingSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ConsumeEvent $args
+     * @param ConsumerEvent $args
      *
      * @return string
      */
-    private function getEventName(ConsumeEvent $args)
+    private function getEventName(ConsumerEvent $args)
     {
         $name = $args->getConsumerContainer()->getConsumerName();
         $tag = $args->getMessage()->delivery_info['delivery_tag'];
