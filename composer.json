@@ -1,42 +1,47 @@
 {
-  "name": "rebuy-de/amqp-php-consumer",
-  "description": "Library for creating annotation based AMQP consumers",
-  "keywords": ["amqp", "consumer", "annotation"],
-  "minimum-stability": "stable",
-  "license": "MIT",
-  "type": "library",
-  "authors": [
-    {
-      "name": "Martin Parsiegla",
-      "email": "m.parsiegla@rebuy.de"
+    "name": "rebuy-de/amqp-php-consumer",
+    "description": "Library for creating annotation based AMQP consumers",
+    "keywords": ["amqp", "consumer", "annotation"],
+    "minimum-stability": "stable",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Martin Parsiegla",
+            "email": "m.parsiegla@rebuy.de"
+        }
+    ],
+    "require": {
+        "php": ">=5.5.0",
+        "videlalvaro/php-amqplib": "~2.6",
+        "doctrine/annotations": "~1.2",
+        "jms/serializer": "~1.0",
+        "symfony/event-dispatcher": "~2.1",
+        "doctrine/collections": "~1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.8",
+        "codeception/verify": "dev-master",
+        "league/statsd": "~1.1",
+        "symfony/stopwatch": "~2.3",
+        "psr/log": "^1.0"
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "autoload": {
+        "psr-4": {
+            "Rebuy\\Amqp\\Consumer\\": "src/Rebuy/Amqp/Consumer"
+        }
+    },
+    "suggest": {
+        "psr/log": "required if you'd like to use the LogHandler or LogSubscriber",
+        "league/statsd": "required if you'd like to use the TimingSubscriber",
+        "symfony/stopwatch": "required if you'd like to use the TimingSubscriber in the amqp package"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
     }
-  ],
-  "require": {
-    "php": ">=5.5.0",
-    "videlalvaro/php-amqplib": "~2.6",
-    "doctrine/annotations": "~1.2",
-    "jms/serializer": "~1.0",
-    "symfony/event-dispatcher": "~2.1",
-    "doctrine/collections": "~1.0"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^4.8",
-    "codeception/verify": "dev-master",
-    "league/statsd": "~1.1",
-    "symfony/stopwatch": "~2.3",
-    "psr/log": "^1.0"
-  },
-  "config": {
-    "bin-dir": "bin"
-  },
-  "autoload": {
-    "psr-4": {
-      "Rebuy\\Amqp\\Consumer\\" : "src/Rebuy/Amqp/Consumer"
-    }
-  },
-  "suggest": {
-    "psr/log": "required if you'd like to use the LogHandler or LogSubscriber",
-    "league/statsd": "required if you'd like to use the TimingSubscriber",
-    "symfony/stopwatch": "required if you'd like to use the TimingSubscriber in the amqp package"
-  }
 }
