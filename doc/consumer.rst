@@ -2,7 +2,7 @@ Creating Consumers
 ==================
 
 Let's assume you have an amqp message which will be published when an order has been created. This message has
-the routing key``order-created`` with the payload ``{"order_id": $SOME_ID}``. In this example we create a consumer
+the routing key ``order-created`` with the payload ``{"order_id": $SOME_ID}``. In this example we create a consumer
 which sends an email to the customer when this message will be published.
 
 First of all, you have to create a PHP class which represents this message::

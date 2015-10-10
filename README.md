@@ -18,7 +18,7 @@ Features
 Documentation
 -------------
 
-For more information, see [the documentation](doc/index.rst).
+For more information, see [the documentation](http://amqp-php-consumer.readthedocs.org/en/latest/consumer.html).
 
 License
 -------

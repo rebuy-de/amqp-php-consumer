@@ -58,7 +58,7 @@ We have now everything we need to create the consumer manager, register consumer
     The consuming process might stop under the following conditions:
 
     - An exception in one of the consumers is thrown
-    - No message has been processed in the last 900 seconds (this value can be altered with the method ``Manager#setIdleTimeout``)
+    - No message has been processed in the last 900 seconds (this value can be altered with the method ``ConsumerManager#setIdleTimeout``)
 
 .. note::
     The ``wait`` method is a blocking process. This method waits for new messages and passes every message to
