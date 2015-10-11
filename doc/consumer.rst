@@ -21,7 +21,7 @@ First of all, you have to create a PHP class which represents this message::
          */
         public $orderId;
 
-        public static function getName()
+        public static function getRoutingKey()
         {
             return 'order-created';
         }
@@ -45,7 +45,7 @@ With this message we are able to create our consumer which will send an email to
         }
 
         /**
-         * @Consumer(name="order-created")
+         * @Consumer(name="order-created-send-email")
          */
         public function sendMail(OrderCreatedMessage $message)
         {

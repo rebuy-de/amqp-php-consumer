@@ -37,8 +37,9 @@ class LogSubscriberTest extends \PHPUnit_Framework_TestCase
         $messageName = 'message-name';
         $methodName = 'MyClass::myMethod';
 
+        /** @var ConsumerContainer $consumerContainer */
         $consumerContainer = $this->prophesize(ConsumerContainer::class);
-        $consumerContainer->getMessageName()->willReturn($messageName);
+        $consumerContainer->getRoutingKey()->willReturn($messageName);
         $consumerContainer->getMethodName()->willReturn($methodName);
 
         $event = new ConsumerEvent(new AMQPMessage($body), $consumerContainer->reveal());
