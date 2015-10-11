@@ -40,7 +40,7 @@ class LogSubscriber implements EventSubscriberInterface
         $container = $event->getConsumerContainer();
         $message = sprintf(
             "Processing message [%s] for consumer [%s] with payload [%s]",
-            $container->getMessageName(),
+            $container->getRoutingKey(),
             $container->getMethodName(),
             $event->getMessage()->body
         );

@@ -60,7 +60,7 @@ class ConsumerContainer
             return [];
         }
 
-        return [$this->getConsumerIdentification(), $this->getMessageName()];
+        return [$this->getConsumerIdentification(), $this->getRoutingKey()];
     }
 
     /**
@@ -68,17 +68,17 @@ class ConsumerContainer
      */
     public function getConsumerIdentification()
     {
-        return sprintf('%s-%s', $this->getConsumerName(), $this->getMessageName());
+        return sprintf('%s-%s', $this->getConsumerName(), $this->getRoutingKey());
     }
 
     /**
      * @return mixed
      */
-    public function getMessageName()
+    public function getRoutingKey()
     {
         $class = $this->method->getParameters()[0]->getClass();
 
-        return $class->getMethod('getName')->invoke(null);
+        return $class->getMethod('getRoutingKey')->invoke(null);
     }
 
     /**

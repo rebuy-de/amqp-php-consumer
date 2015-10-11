@@ -7,5 +7,5 @@ interface MessageInterface
     /**
      * @return string
      */
-    public static function getName();
+    public static function getRoutingKey();
 }

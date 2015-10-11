@@ -35,7 +35,7 @@ class RequeuerHandler implements ErrorHandlerInterface
         $nativeData = $table->getNativeData();
 
         if (!isset($nativeData['type'])) {
-            $table->set('type', $genericMessage->getName(), AMQPTable::T_STRING_LONG);
+            $table->set('type', $genericMessage->getRoutingKey(), AMQPTable::T_STRING_LONG);
         }
 
         if (!isset($nativeData['routing'])) {
