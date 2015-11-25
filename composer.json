@@ -1,5 +1,5 @@
 {
-    "name": "rebuy-de/amqp-php-consumer",
+    "name": "rebuy/amqp-php-consumer",
     "description": "Library for creating annotation based AMQP consumers",
     "keywords": ["amqp", "consumer", "annotation"],
     "minimum-stability": "stable",
