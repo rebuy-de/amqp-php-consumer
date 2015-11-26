@@ -9,7 +9,7 @@ Composer_:
 
 .. code-block:: bash
 
-    $ composer require rebuy-de/amqp-php-consumer
+    $ composer require rebuy/amqp-php-consumer
 
 .. note::
 
@@ -27,6 +27,6 @@ There are two things you need to do to get started:
 1. :doc:`create one ore more consumer <consumer>`
 2. :doc:`create a consumer manager <consumer-manager>`
 
-.. _Packagist: https://packagist.org/packages/rebuy-de/amqp-php-consumer
+.. _Packagist: https://packagist.org/packages/rebuy/amqp-php-consumer
 .. _Composer: http://getcomposer.org
 .. _Semantic Versioning: http://semver.org/

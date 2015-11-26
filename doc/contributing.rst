@@ -14,7 +14,7 @@ First clone the repository, install the vendors, then run the tests:
 
 .. code-block:: bash
 
-    $ git clone https://github.com/rebuy-de/amqp-php-consumer.git
+    $ git clone https://github.com/rebuy/amqp-php-consumer.git
     $ cd amqp-php-consumer
     $ composer install --dev
     $ bin/phpunit
