@@ -39,6 +39,7 @@ class Parser
         $class = new ReflectionClass($obj);
         $consumerMethods = [];
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+            /** @var Consumer $annotation */
             $annotation = $this->reader->getMethodAnnotation($method, Consumer::class);
             if (null === $annotation) {
                 continue;
