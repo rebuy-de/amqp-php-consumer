@@ -25,9 +25,27 @@ Create a JMS Serializer
 -----------------------
 
 In order to deserialize the payload of an AMQP message we have to create a Serializer object
-The easiest way to do so is by using the ``SerializerBuilder`` from this library::
+The easiest way to do so is by using the ``SerializerBuilder`` from the JMS library::
 
-    $serializer = JMS\Serializer\SerializerBuilder::create()->build();
+    use Rebuy\Amqp\Consumer\Serializer\JMSSerializerAdapter;
+    use JMS\Serializer\SerializerBuilder;
+
+    $serializer = SerializerBuilder::create()->build();
+    $serializerAdapter = new JMSSerializerAdapter($serializer);
+
+If you'd rather want to use the symfony serializer, do the following::
+
+    use Rebuy\Amqp\Consumer\Serializer\SymfonySerializerAdapter;
+    use Symfony\Component\Serializer\Serializer;
+    use Symfony\Component\Serializer\Encoder\XmlEncoder;
+    use Symfony\Component\Serializer\Encoder\JsonEncoder;
+    use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+
+    $encoders = array(new XmlEncoder(), new JsonEncoder());
+    $normalizers = array(new ObjectNormalizer());
+
+    $serializer = new Serializer($normalizers, $encoders);
+    $serializerAdapter = new SymfonySerializerAdapter($serializer);
 
 Create the Annotation Parser
 ----------------------------
@@ -49,7 +67,7 @@ Tying it all together
 
 We have now everything we need to create the consumer manager, register consumers and start the consuming process::
 
-    $manager = new Rebuy\Amqp\Consumer\ConsumerManager($channel, $exchangeName, $serializer, $parser);
+    $manager = new Rebuy\Amqp\Consumer\ConsumerManager($channel, $exchangeName, $serializerAdapter, $parser);
     $manager->registerConsumer(new MyConsumer());
 
     $manager->wait()
