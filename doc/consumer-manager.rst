@@ -41,8 +41,8 @@ If you'd rather want to use the symfony serializer, do the following::
     use Symfony\Component\Serializer\Encoder\JsonEncoder;
     use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-    $encoders = array(new XmlEncoder(), new JsonEncoder());
-    $normalizers = array(new ObjectNormalizer());
+    $encoders = [new XmlEncoder(), new JsonEncoder()];
+    $normalizers = [new ObjectNormalizer()];
 
     $serializer = new Serializer($normalizers, $encoders);
     $serializerAdapter = new SymfonySerializerAdapter($serializer);
