@@ -2,7 +2,6 @@
 
 namespace Rebuy\Tests\Amqp\Consumer;
 
-use JMS\Serializer\Serializer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PHPUnit_Framework_TestCase;
 use Prophecy\Argument;
@@ -10,10 +9,11 @@ use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Annotation\Parser;
 use Rebuy\Amqp\Consumer\ConsumerManager;
+use Rebuy\Amqp\Consumer\Serializer\Serializer;
 use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ManagerTest extends PHPUnit_Framework_TestCase
+class ConsumerManagerTest extends PHPUnit_Framework_TestCase
 {
     const EXCHANGE_NAME = 'exchange';
 

@@ -15,15 +15,16 @@
         "php": "^5.6 || ^7.0",
         "php-amqplib/php-amqplib": "~2.6",
         "doctrine/annotations": "~1.2",
-        "jms/serializer": "~1.0",
-        "symfony/event-dispatcher": "~2.3|~3.0",
+        "symfony/event-dispatcher": "~3.0|~4.0",
         "doctrine/collections": "~1.0"
     },
     "require-dev": {
+        "jms/serializer": "~1.0",
         "phpunit/phpunit": "~5.4",
         "codeception/verify": "~0.3",
         "league/statsd": "~1.1",
-        "symfony/stopwatch": "~2.3|3.0",
+        "symfony/stopwatch": "~3.0|~4.0",
+        "symfony/serializer": "~3.0|~4.0",
         "psr/log": "^1.0"
     },
     "config": {
@@ -37,7 +38,9 @@
     "suggest": {
         "psr/log": "required if you'd like to use the LogHandler or LogSubscriber",
         "league/statsd": "required if you'd like to use the TimingSubscriber",
-        "symfony/stopwatch": "required if you'd like to use the TimingSubscriber in the amqp package"
+        "symfony/stopwatch": "required if you'd like to use the TimingSubscriber in the amqp package",
+        "jms/serializer": "required if you'd like to use the jms serializer",
+        "symfony/serializer": "required if you'd like to use the symfony serializer"
     },
     "extra": {
         "branch-alias": {
