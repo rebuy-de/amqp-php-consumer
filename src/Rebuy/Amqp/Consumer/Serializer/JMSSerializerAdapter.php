@@ -18,6 +18,6 @@ class JMSSerializerAdapter implements Serializer
     
     public function deserialize($data, $type, $format)
     {
-        $this->serializer->deserialize($data, $type, $format);
+        return $this->serializer->deserialize($data, $type, $format);
     }
 }
