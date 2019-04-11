@@ -2,7 +2,7 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Annotation;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Consumer;
@@ -11,7 +11,7 @@ use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithTwoParameters;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
 use ReflectionMethod;
 
-class ConsumerContainerTest extends PHPUnit_Framework_TestCase
+class ConsumerContainerTest extends TestCase
 {
     const TEST_PREFIX = "test";
 

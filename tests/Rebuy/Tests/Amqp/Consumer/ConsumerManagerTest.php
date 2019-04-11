@@ -3,17 +3,18 @@
 namespace Rebuy\Tests\Amqp\Consumer;
 
 use PhpAmqpLib\Channel\AMQPChannel;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Annotation\Parser;
 use Rebuy\Amqp\Consumer\ConsumerManager;
+use Rebuy\Amqp\Consumer\Exception\ConsumerException;
 use Rebuy\Amqp\Consumer\Serializer\Serializer;
 use stdClass;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class ConsumerManagerTest extends PHPUnit_Framework_TestCase
+class ConsumerManagerTest extends TestCase
 {
     const EXCHANGE_NAME = 'exchange';
 
@@ -42,7 +43,7 @@ class ConsumerManagerTest extends PHPUnit_Framework_TestCase
      */
     private $parser;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->channel = $this->prophesize(AMQPChannel::class);
         $this->serializer = $this->prophesize(Serializer::class);
@@ -60,21 +61,23 @@ class ConsumerManagerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Rebuy\Amqp\Consumer\Exception\ConsumerException
-     * @expectedExceptionMessage Expected argument of type "object", "string" given
      */
     public function register_consumer_with_string_parameter_should_throw_exception()
     {
+        $this->expectException(ConsumerException::class);
+        $this->expectExceptionMessage('Expected argument of type "object", "string" given');
+
         $this->manager->registerConsumer('string');
     }
 
     /**
      * @test
-     * @expectedException \Rebuy\Amqp\Consumer\Exception\ConsumerException
-     * @expectedExceptionMessage Expected argument of type "object", "integer" given
      */
     public function register_consumer_with_int_parameter_should_throw_exception()
     {
+        $this->expectException(ConsumerException::class);
+        $this->expectExceptionMessage('Expected argument of type "object", "integer" given');
+
         $this->manager->registerConsumer(12);
     }
 
@@ -98,10 +101,11 @@ class ConsumerManagerTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Rebuy\Amqp\Consumer\Exception\ConsumerException
      */
     public function register_consumer_with_same_name_should_throw_exception()
     {
+        $this->expectException(ConsumerException::class);
+
         $container = $this->prophesize(ConsumerContainer::class);
         $container->getConsumerName()->willReturn('myName');
         $container->getMethodName()->willReturn('MyConsumer::method');

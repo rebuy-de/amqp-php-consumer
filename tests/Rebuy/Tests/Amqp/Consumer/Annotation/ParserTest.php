@@ -2,9 +2,10 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Annotation;
 
+use Doctrine\Common\Annotations\AnnotationException;
 use Doctrine\Common\Annotations\AnnotationReader;
 use InvalidArgumentException;
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
 use Rebuy\Amqp\Consumer\Annotation\Parser;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Consumer;
@@ -14,7 +15,7 @@ use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithPrefetchCount;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithTwoParameters;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
 
-class ParserTest extends PHPUnit_Framework_TestCase
+class ParserTest extends TestCase
 {
     /**
      * @test
@@ -63,10 +64,11 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function parser_should_not_parse_consumer_method_with_two_parameters()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $parser = new Parser(new AnnotationReader());
         $consumer = new ConsumerWithTwoParameters();
 
@@ -75,10 +77,11 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException InvalidArgumentException
      */
     public function parser_should_not_parse_consumer_method_without_marker_interface()
     {
+        $this->expectException(InvalidArgumentException::class);
+
         $parser = new Parser(new AnnotationReader());
         $consumer = new ConsumerWithInvalidParameter();
 
@@ -87,10 +90,11 @@ class ParserTest extends PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException \Doctrine\Common\Annotations\AnnotationException
      */
     public function parser_should_throw_exception_when_name_for_consumer_is_not_set()
     {
+        $this->expectException(AnnotationException::class);
+
         $parser = new Parser(new AnnotationReader());
         $consumer = new ConsumerWithInvalidAnnotation();
 
