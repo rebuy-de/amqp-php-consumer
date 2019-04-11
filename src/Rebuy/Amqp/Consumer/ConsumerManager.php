@@ -82,7 +82,7 @@ class ConsumerManager
     public function wait()
     {
         while (count($this->channel->callbacks)) {
-            $this->channel->wait(null, true, $this->idleTimeout);
+            $this->channel->wait(null, false, $this->idleTimeout);
         }
     }
 

@@ -4,6 +4,7 @@ namespace Rebuy\Tests\Amqp\Consumer\Subscriber;
 
 use League\StatsD\Client;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\ConsumerEvent;
@@ -11,7 +12,7 @@ use Rebuy\Amqp\Consumer\Subscriber\TimingSubscriber;
 use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\Stopwatch\StopwatchEvent;
 
-class TimingSubscriberTest extends \PHPUnit_Framework_TestCase
+class TimingSubscriberTest extends TestCase
 {
     /**
      * @var Stopwatch|ObjectProphecy
@@ -28,7 +29,7 @@ class TimingSubscriberTest extends \PHPUnit_Framework_TestCase
      */
     private $subscriber;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->statsdClient = $this->prophesize(Client::class);
         $this->stopwatch = $this->prophesize(Stopwatch::class);

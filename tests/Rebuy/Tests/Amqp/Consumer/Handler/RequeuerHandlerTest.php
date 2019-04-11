@@ -5,6 +5,7 @@ namespace Rebuy\Tests\Amqp\Consumer\Handler;
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
@@ -13,7 +14,7 @@ use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 use Rebuy\Amqp\Consumer\Handler\RequeuerHandler;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
 
-class RequeuerHandlerTest extends \PHPUnit_Framework_TestCase
+class RequeuerHandlerTest extends TestCase
 {
     const CONSUMER_IDENTIFICATION = 'my-consumer-identification';
 
@@ -32,7 +33,7 @@ class RequeuerHandlerTest extends \PHPUnit_Framework_TestCase
      */
     private $handler;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->client = $this->prophesize(ClientInterface::class);
         $this->handler = new RequeuerHandler($this->client->reveal());
