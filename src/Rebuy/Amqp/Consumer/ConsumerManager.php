@@ -16,6 +16,7 @@ use Rebuy\Amqp\Consumer\Serializer\Serializer;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Throwable;
 
 class ConsumerManager
 {
@@ -202,7 +203,7 @@ class ConsumerManager
 
         try {
             $result = $consumerContainer->invoke($payload);
-        } catch (Exception $e) {
+        } catch (Throwable $e) {
             $containerException = new ConsumerContainerException($consumerContainer, $message, $payload, $e);
             if ($this->errorHandlers->isEmpty()) {
                 throw $containerException;

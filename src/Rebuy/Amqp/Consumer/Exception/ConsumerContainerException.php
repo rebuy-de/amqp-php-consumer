@@ -7,6 +7,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use RuntimeException;
+use Throwable;
 
 class ConsumerContainerException extends RuntimeException
 {
@@ -29,13 +30,13 @@ class ConsumerContainerException extends RuntimeException
      * @param ConsumerContainer $consumerContainer
      * @param AMQPMessage $amqpMessage
      * @param MessageInterface $payloadMessage
-     * @param Exception $e
+     * @param Throwable $e
      */
     public function __construct(
         ConsumerContainer $consumerContainer,
         AMQPMessage $amqpMessage,
         MessageInterface $payloadMessage,
-        Exception $e
+        Throwable $e
     )
     {
         $this->payloadMessage = $payloadMessage;
