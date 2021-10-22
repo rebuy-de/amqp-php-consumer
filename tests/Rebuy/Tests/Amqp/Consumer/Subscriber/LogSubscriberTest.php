@@ -5,6 +5,7 @@ namespace Rebuy\Tests\Amqp\Consumer\Subscriber;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
@@ -13,6 +14,8 @@ use Rebuy\Amqp\Consumer\Subscriber\LogSubscriber;
 
 class LogSubscriberTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var LoggerInterface|ObjectProphecy
      */

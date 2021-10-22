@@ -5,6 +5,7 @@ namespace Rebuy\Tests\Amqp\Consumer;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Annotation\Parser;
@@ -16,6 +17,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class ConsumerManagerTest extends TestCase
 {
+    use ProphecyTrait;
+
     const EXCHANGE_NAME = 'exchange';
 
     /**

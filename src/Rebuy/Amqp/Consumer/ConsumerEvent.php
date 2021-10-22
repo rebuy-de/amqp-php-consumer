@@ -4,7 +4,7 @@ namespace Rebuy\Amqp\Consumer;
 
 use PhpAmqpLib\Message\AMQPMessage;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ConsumerEvent extends Event
 {

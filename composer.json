@@ -12,20 +12,21 @@
         }
     ],
     "require": {
-        "php": "^7.2",
-        "php-amqplib/php-amqplib": "~2.6",
-        "doctrine/annotations": "~1.2",
-        "symfony/event-dispatcher": "~3.0|~4.0",
-        "doctrine/collections": "~1.0"
+        "php": "^7.2|^8.0",
+        "php-amqplib/php-amqplib": "^2.6",
+        "doctrine/annotations": "^1.10",
+        "symfony/event-dispatcher": "^4.4|^5.0",
+        "doctrine/collections": "^1.6"
     },
     "require-dev": {
-        "jms/serializer": "~1.0",
-        "phpunit/phpunit": "~8.1",
-        "codeception/verify": "~1.0",
-        "league/statsd": "~1.1",
-        "symfony/stopwatch": "~3.0|~4.0",
-        "symfony/serializer": "~3.0|~4.0",
-        "psr/log": "^1.0"
+        "jms/serializer": "^3.15.0",
+        "phpunit/phpunit": "^9.5.10",
+        "codeception/verify": "^2.1.1",
+        "league/statsd": "~1.5",
+        "symfony/stopwatch": "^4.4|^5.0",
+        "symfony/serializer": "^4.4|^5.0",
+        "psr/log": "^1.0",
+        "phpspec/prophecy-phpunit": "^2.0"
     },
     "config": {
         "bin-dir": "bin"

@@ -29,8 +29,8 @@ class ParserTest extends TestCase
 
         $consumerMethod = $consumerMethods[0];
 
-        verify($consumerMethods)->count(1);
-        verify($consumerMethod->getBindings())->contains('genericMessage');
+        verify($consumerMethods)->arrayCount(1);
+        verify($consumerMethod->getBindings())->arrayContains('genericMessage');
         verify($consumerMethod->getMessageClass())->equals(Message::class);
     }
 

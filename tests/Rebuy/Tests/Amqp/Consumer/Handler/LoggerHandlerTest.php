@@ -6,6 +6,7 @@ use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
@@ -15,6 +16,8 @@ use Rebuy\Amqp\Consumer\Message\MessageInterface;
 
 class LoggerHandlerTest extends TestCase
 {
+    use ProphecyTrait;
+
     const MESSAGE_CLASS = 'MyClass';
 
     /**
@@ -64,7 +67,7 @@ class LoggerHandlerTest extends TestCase
                 Argument::containingString($exceptionMessage)
             ),
             Argument::that(function ($context) use ($baseException) {
-                verify($context['exception'])->isInstanceOf(ConsumerContainerException::class);
+                verify($context['exception'])->instanceOf(ConsumerContainerException::class);
                 verify($context['exception']->getPrevious())->equals($baseException);
 
                 return $context;
