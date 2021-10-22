@@ -5,6 +5,7 @@ namespace Rebuy\Tests\Amqp\Consumer\Subscriber;
 use League\StatsD\Client;
 use PhpAmqpLib\Message\AMQPMessage;
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\ConsumerEvent;
@@ -14,6 +15,8 @@ use Symfony\Component\Stopwatch\StopwatchEvent;
 
 class TimingSubscriberTest extends TestCase
 {
+    use ProphecyTrait;
+
     /**
      * @var Stopwatch|ObjectProphecy
      */

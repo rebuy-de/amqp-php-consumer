@@ -7,6 +7,7 @@ use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\ClientInterface;
@@ -16,6 +17,8 @@ use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
 
 class RequeuerHandlerTest extends TestCase
 {
+    use ProphecyTrait;
+
     const CONSUMER_IDENTIFICATION = 'my-consumer-identification';
 
     /**
@@ -54,7 +57,7 @@ class RequeuerHandlerTest extends TestCase
 
         $amqpMessage->has('application_headers')->willReturn(false);
         $amqpMessage->set('application_headers', Argument::that(function (AMQPTable $table) {
-            verify($table->getNativeData())->hasKey('routing');
+            verify($table->getNativeData())->arrayHasKey('routing');
 
             return $table;
         }))->shouldBeCalled();
@@ -83,7 +86,7 @@ class RequeuerHandlerTest extends TestCase
 
         $amqpMessage->has('application_headers')->willReturn(false);
         $amqpMessage->set('application_headers', Argument::that(function (AMQPTable $table) {
-            verify($table->getNativeData())->hasKey('type');
+            verify($table->getNativeData())->arrayHasKey('type');
 
             return $table;
         }))->shouldBeCalled();

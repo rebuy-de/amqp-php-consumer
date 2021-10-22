@@ -3,6 +3,7 @@
 namespace Rebuy\Tests\Amqp\Consumer\Annotation;
 
 use PHPUnit\Framework\TestCase;
+use Prophecy\PhpUnit\ProphecyTrait;
 use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Consumer;
@@ -13,6 +14,8 @@ use ReflectionMethod;
 
 class ConsumerContainerTest extends TestCase
 {
+    use ProphecyTrait;
+
     const TEST_PREFIX = "test";
 
     /**
@@ -46,7 +49,7 @@ class ConsumerContainerTest extends TestCase
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation());
         $result = $container->getBindings();
 
-        verify($result)->isEmpty();
+        verify($result)->empty();
     }
 
     /**
@@ -60,7 +63,7 @@ class ConsumerContainerTest extends TestCase
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation());
         $result = $container->getBindings();
 
-        verify($result)->isEmpty();
+        verify($result)->empty();
     }
 
     /**
@@ -74,7 +77,7 @@ class ConsumerContainerTest extends TestCase
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation());
         $result = $container->getBindings();
 
-        verify($result)->isEmpty();
+        verify($result)->empty();
     }
 
     /**
@@ -89,7 +92,7 @@ class ConsumerContainerTest extends TestCase
         $result = $container->getBindings();
 
         verify($result)->notEmpty();
-        verify($result)->count(2);
+        verify($result)->arrayCount(2);
     }
 
     /**
@@ -105,8 +108,8 @@ class ConsumerContainerTest extends TestCase
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
         $result = $container->getBindings();
 
-        verify($result)->contains("test-consume-method-genericMessage");
-        verify($result)->contains("genericMessage");
+        verify($result)->arrayContains("test-consume-method-genericMessage");
+        verify($result)->arrayContains("genericMessage");
     }
 
     /**
