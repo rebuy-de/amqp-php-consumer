@@ -136,7 +136,7 @@ class ConsumerManager
             $this->channel->queue_bind($consumerName, $this->exchangeName, $binding);
         }
 
-        $this->channel->basic_qos($consumerName, $consumerContainer->getPrefetchCount(), false);
+        $this->channel->basic_qos(null, $consumerContainer->getPrefetchCount(), false);
         $this->channel->basic_consume($consumerName, '', false, false, false, false, function (AMQPMessage $message) use ($consumerContainer) {
             $this->consume($consumerContainer, $message);
             $message->getChannel()->basic_ack($message->getDeliveryTag());

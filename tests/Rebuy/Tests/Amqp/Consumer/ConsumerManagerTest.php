@@ -143,7 +143,7 @@ class ConsumerManagerTest extends TestCase
 
         $this->parser->getConsumerMethods($consumer)->willReturn([$containerMock]);
 
-        $this->channel->basic_qos($consumerName, 1, false)->shouldBeCalled();
+        $this->channel->basic_qos(null, 1, false)->shouldBeCalled();
         $this->channel->basic_consume($consumerName, Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
         $this->channel->queue_declare($consumerName, Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
         $this->channel->queue_bind($consumerName, self::EXCHANGE_NAME, $binding1)->shouldBeCalled();
