@@ -4,7 +4,6 @@ namespace Rebuy\Amqp\Consumer;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Exception;
 use PhpAmqpLib\Channel\AMQPChannel;
 use PhpAmqpLib\Message\AMQPMessage;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
@@ -13,9 +12,9 @@ use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 use Rebuy\Amqp\Consumer\Exception\ConsumerException;
 use Rebuy\Amqp\Consumer\Handler\ErrorHandlerInterface;
 use Rebuy\Amqp\Consumer\Serializer\Serializer;
-use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\Event;
 use Throwable;
 
 class ConsumerManager
@@ -107,8 +106,6 @@ class ConsumerManager
 
     /**
      * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return $this
      */
     public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
     {
@@ -142,7 +139,7 @@ class ConsumerManager
         $this->channel->basic_qos($consumerName, $consumerContainer->getPrefetchCount(), false);
         $this->channel->basic_consume($consumerName, '', false, false, false, false, function (AMQPMessage $message) use ($consumerContainer) {
             $this->consume($consumerContainer, $message);
-            $message->delivery_info['channel']->basic_ack($message->delivery_info['delivery_tag']);
+            $message->getChannel()->basic_ack($message->getDeliveryTag());
         });
 
         $this->consumerContainers[$consumerName] = $consumerContainer;
@@ -180,12 +177,12 @@ class ConsumerManager
      */
     private function consume(ConsumerContainer $container, AMQPMessage $message)
     {
-        $eventArgs = new ConsumerEvent($message, $container);
-        $this->dispatchEvent(ConsumerEvents::PRE_CONSUME, $eventArgs);
+        $event = new ConsumerEvent($message, $container);
+        $this->dispatchEvent($event, ConsumerEvents::PRE_CONSUME);
 
         $result = $this->invoke($container, $message);
 
-        $this->dispatchEvent(ConsumerEvents::POST_CONSUME, $eventArgs);
+        $this->dispatchEvent($event, ConsumerEvents::POST_CONSUME);
 
         return $result;
     }
@@ -219,16 +216,12 @@ class ConsumerManager
         return $result;
     }
 
-    /**
-     * @param string $eventName
-     * @param Event $args
-     */
-    private function dispatchEvent($eventName, $args)
+    private function dispatchEvent(Event $event, string $eventName)
     {
         if (null === $this->eventDispatcher) {
             return;
         }
 
-        $this->eventDispatcher->dispatch($eventName, $args);
+        $this->eventDispatcher->dispatch($event, $eventName);
     }
 }

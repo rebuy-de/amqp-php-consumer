@@ -18,10 +18,6 @@ class ConsumerEvent extends Event
      */
     private $consumerContainer;
 
-    /**
-     * @param AMQPMessage $message
-     * @param ConsumerContainer $consumerContainer
-     */
     public function __construct(AMQPMessage $message, ConsumerContainer $consumerContainer)
     {
         $this->envelope = $message;
