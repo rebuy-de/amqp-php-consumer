@@ -7,24 +7,16 @@ use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 
 class LogHandler implements ErrorHandlerInterface
 {
-    const REDELIVER_COUNTER = 'redeliver-counter';
-
     /**
      * @var LoggerInterface
      */
     private $logger;
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function handle(ConsumerContainerException $ex)
     {
         $messageClass = $ex->getConsumerContainer()->getMessageClass();

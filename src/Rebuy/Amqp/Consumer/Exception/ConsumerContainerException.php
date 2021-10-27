@@ -26,12 +26,6 @@ class ConsumerContainerException extends RuntimeException
      */
     private $amqpMessage;
 
-    /**
-     * @param ConsumerContainer $consumerContainer
-     * @param AMQPMessage $amqpMessage
-     * @param MessageInterface $payloadMessage
-     * @param Throwable $e
-     */
     public function __construct(
         ConsumerContainer $consumerContainer,
         AMQPMessage $amqpMessage,

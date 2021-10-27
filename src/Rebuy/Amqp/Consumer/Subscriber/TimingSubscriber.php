@@ -70,7 +70,7 @@ class TimingSubscriber implements EventSubscriberInterface
     private function getEventName(ConsumerEvent $args)
     {
         $name = $args->getConsumerContainer()->getConsumerName();
-        $tag = $args->getMessage()->delivery_info['delivery_tag'];
+        $tag = $args->getMessage()->getDeliveryTag();
 
         return sprintf('%s-%s', $name, $tag);
     }
