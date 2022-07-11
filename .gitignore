@@ -5,3 +5,4 @@ phpunit.xml
 vendor
 doc/_build/
 .phpunit.result.cache
+.idea/

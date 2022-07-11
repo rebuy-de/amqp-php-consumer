@@ -15,10 +15,9 @@
             <directory>./tests/Rebuy/</directory>
         </testsuite>
     </testsuites>
-
-    <filter>
-        <whitelist>
+    <coverage>
+        <include>
             <directory>./src/Rebuy/</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </coverage>
 </phpunit>
