@@ -36,6 +36,11 @@
             "Rebuy\\Amqp\\Consumer\\": "src/Rebuy/Amqp/Consumer"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Rebuy\\Tests\\": "tests/Rebuy/Tests"
+        }
+    },
     "suggest": {
         "psr/log": "required if you'd like to use the LogHandler or LogSubscriber",
         "league/statsd": "required if you'd like to use the TimingSubscriber",
