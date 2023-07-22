@@ -65,7 +65,8 @@ class Parser
         }
 
         $parameter = $method->getParameters()[0];
-        if (null === $parameter->getClass() || !$parameter->getClass()->implementsInterface(MessageInterface::class)) {
+        $class = $parameter->getType()?->getName();
+        if (!is_a($class, MessageInterface::class, true)) {
             throw new InvalidArgumentException('A @Consumer\'s parameter must implement ' . MessageInterface::class);
         }
     }

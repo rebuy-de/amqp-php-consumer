@@ -50,7 +50,7 @@ class TimingSubscriberTest extends TestCase
         $consumerName = 'consumer';
         $eventName = $consumerName . '-' . $deliveryTag;
         $message = new AMQPMessage('body');
-        $message->delivery_info['delivery_tag'] = $deliveryTag;
+        $message->setDeliveryTag($deliveryTag);
 
         $container = $this->prophesize(ConsumerContainer::class);
         $container->getConsumerName()->willReturn($consumerName);
