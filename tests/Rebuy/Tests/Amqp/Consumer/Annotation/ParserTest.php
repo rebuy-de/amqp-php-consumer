@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
 use Rebuy\Amqp\Consumer\Annotation\Parser;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Consumer;
+use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithAttributes;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithInvalidAnnotation;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithInvalidParameter;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithPrefetchCount;
@@ -49,7 +50,7 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @tests
+     * @test
      */
     public function parser_should_use_prefetch_count_from_annotation()
     {
@@ -59,6 +60,21 @@ class ParserTest extends TestCase
         $consumerMethods = $parser->getConsumerMethods($consumer);
         $consumerMethod = $consumerMethods[0];
 
+        verify($consumerMethod->getPrefetchCount())->equals(100);
+    }
+
+    /**
+     * @test
+     */
+    public function parser_should_support_attributes()
+    {
+        $parser = new Parser(new AnnotationReader(), 'prefix');
+        $consumer = new ConsumerWithAttributes();
+
+        $consumerMethods = $parser->getConsumerMethods($consumer);
+        $consumerMethod = $consumerMethods[0];
+
+        verify($consumerMethod->getConsumerName())->equals('prefix-consume-with-attributes');
         verify($consumerMethod->getPrefetchCount())->equals(100);
     }
 

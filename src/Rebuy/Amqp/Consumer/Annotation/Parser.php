@@ -39,8 +39,7 @@ class Parser
         $class = new ReflectionClass($obj);
         $consumerMethods = [];
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            /** @var Consumer $annotation */
-            $annotation = $this->reader->getMethodAnnotation($method, Consumer::class);
+            $annotation = $this->getConsumerAnnotationOrAttribute($method);
             if (null === $annotation) {
                 continue;
             }
@@ -65,8 +64,22 @@ class Parser
         }
 
         $parameter = $method->getParameters()[0];
-        if (null === $parameter->getClass() || !$parameter->getClass()->implementsInterface(MessageInterface::class)) {
+        $class = $parameter->getType()?->getName();
+        if (!is_a($class, MessageInterface::class, true)) {
             throw new InvalidArgumentException('A @Consumer\'s parameter must implement ' . MessageInterface::class);
         }
+    }
+
+    private function getConsumerAnnotationOrAttribute(ReflectionMethod $method): ?Consumer
+    {
+        $reflectionAttributes = $method->getAttributes();
+        foreach ($reflectionAttributes as $attribute) {
+            if ($attribute->getName() === Consumer::class) {
+                return $attribute->newInstance();
+            }
+        }
+
+        return $this->reader->getMethodAnnotation($method, Consumer::class);
+
     }
 }

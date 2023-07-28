@@ -33,7 +33,7 @@ class ConsumerContainerTest extends TestCase
             self::TEST_PREFIX,
             $consumer,
             $reflectionMethod->reveal(),
-            new ConsumerAnnotation()
+            new ConsumerAnnotation('name')
         );
         $container->invoke($payload);
     }
@@ -46,7 +46,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation());
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
         $result = $container->getBindings();
 
         verify($result)->empty();
@@ -60,8 +60,22 @@ class ConsumerContainerTest extends TestCase
         $consumer = new ConsumerWithTwoParameters();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation());
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
         $result = $container->getBindings();
+
+        verify($result)->empty();
+    }
+
+    /**
+     * @test
+     */
+    public function getRoutingKey_should_return_null_if_the_class_does_not_implement_the_MessageInterface()
+    {
+        $consumer = new ConsumerWithInvalidParameter();
+        $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
+
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
+        $result = $container->getRoutingKey();
 
         verify($result)->empty();
     }
@@ -74,7 +88,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation());
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
         $result = $container->getBindings();
 
         verify($result)->empty();
@@ -88,7 +102,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation());
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
         $result = $container->getBindings();
 
         verify($result)->notEmpty();
@@ -103,7 +117,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $consumerAnnotation = new ConsumerAnnotation();
+        $consumerAnnotation = new ConsumerAnnotation('name');
         $consumerAnnotation->name = "consume-method";
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
         $result = $container->getBindings();
@@ -120,7 +134,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $consumerAnnotation = new ConsumerAnnotation();
+        $consumerAnnotation = new ConsumerAnnotation('name');
         $consumerAnnotation->name = "consume-method";
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
         $result = $container->getConsumerName();
@@ -136,7 +150,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $consumerAnnotation = new ConsumerAnnotation();
+        $consumerAnnotation = new ConsumerAnnotation('name');
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
 
         $result = $container->getMethodName();

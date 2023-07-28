@@ -51,12 +51,12 @@ class ConsumerContainer
             return [];
         }
 
-        $class = $this->method->getParameters()[0]->getClass();
+        $class = $this->method->getParameters()[0]->getType()?->getName();
         if (null === $class) {
             return [];
         }
 
-        if (!$class->implementsInterface(MessageInterface::class)) {
+        if (!is_a($class, MessageInterface::class, true)) {
             return [];
         }
 
@@ -76,9 +76,12 @@ class ConsumerContainer
      */
     public function getRoutingKey()
     {
-        $class = $this->method->getParameters()[0]->getClass();
+        $class = $this->method->getParameters()[0]->getType()?->getName();
+        if (!is_a($class, MessageInterface::class, true)) {
+            return null;
+        }
 
-        return $class->getMethod('getRoutingKey')->invoke(null);
+        return $class::getRoutingKey();
     }
 
     /**
@@ -86,12 +89,7 @@ class ConsumerContainer
      */
     public function getMessageClass()
     {
-        $class = $this->method->getParameters()[0]->getClass();
-        if (null === $class) {
-            return null;
-        }
-
-        return $class->getName();
+        return $this->method->getParameters()[0]->getType()?->getName();
     }
 
     /**
