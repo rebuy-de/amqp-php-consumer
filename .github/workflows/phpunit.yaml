@@ -1,0 +1,38 @@
+name: PHPUnit
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [ opened, reopened, synchronize ]
+
+jobs:
+  run:
+    runs-on: 'ubuntu-latest'
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - php: '8.1'
+            composer: 'composer:v2'
+          - php: '8.2'
+            composer: 'composer:v2'
+          - php: '8.3'
+            composer: 'composer:v2'
+
+    name: PHP ${{ matrix.php }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          tools: ${{ matrix.composer }}
+
+      - name: Composer install
+        run: composer install
+
+      - name: PHPUnit tests
+        run: ./bin/phpunit --verbose --debug
