@@ -27,7 +27,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new Consumer();
 
         $reflectionMethod = $this->prophesize(ReflectionMethod::class);
-        $reflectionMethod->invoke($consumer, $payload)->shouldBeCalled();
+        $reflectionMethod->invoke($consumer, $payload)->willReturn('');
 
         $container = new ConsumerContainer(
             self::TEST_PREFIX,
@@ -36,6 +36,9 @@ class ConsumerContainerTest extends TestCase
             new ConsumerAnnotation('name')
         );
         $container->invoke($payload);
+
+        $reflectionMethod->invoke($consumer, $payload)->shouldHaveBeenCalled();
+
     }
 
     /**
