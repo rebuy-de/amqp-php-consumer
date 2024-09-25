@@ -21,45 +21,21 @@ class ConsumerManager
 {
     const DEFAULT_IDLE_TIMEOUT = 900;
 
-    /**
-     * @var ConsumerContainer[]
-     */
-    private $consumerContainers;
+    private array $consumerContainers;
 
-    /**
-     * @var Serializer
-     */
-    private $serializer;
+    private Serializer $serializer;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private EventDispatcherInterface $eventDispatcher;
 
-    /**
-     * @var AMQPChannel
-     */
-    private $channel;
+    private AMQPChannel $channel;
 
-    /**
-     * @var string
-     */
-    private $exchangeName;
+    private string $exchangeName;
 
-    /**
-     * @var Collection
-     */
-    private $errorHandlers;
+    private ArrayCollection $errorHandlers;
 
-    /**
-     * @var int
-     */
-    private $idleTimeout = self::DEFAULT_IDLE_TIMEOUT;
+    private int $idleTimeout = self::DEFAULT_IDLE_TIMEOUT;
 
-    /**
-     * @var Parser
-     */
-    private $parser;
+    private Parser $parser;
 
     /**
      * @param AMQPChannel $channel
@@ -67,7 +43,7 @@ class ConsumerManager
      * @param Serializer $serializer
      * @param Parser $parser
      */
-    public function __construct(AMQPChannel $channel, $exchangeName, Serializer $serializer, Parser $parser)
+    public function __construct(AMQPChannel $channel, string $exchangeName, Serializer $serializer, Parser $parser)
     {
         $this->serializer = $serializer;
         $this->eventDispatcher = new EventDispatcher();
@@ -79,7 +55,7 @@ class ConsumerManager
         $this->parser = $parser;
     }
 
-    public function wait()
+    public function wait(): void
     {
         while (count($this->channel->callbacks)) {
             $this->channel->wait(null, false, $this->idleTimeout);
@@ -91,7 +67,7 @@ class ConsumerManager
      *
      * @throws ConsumerException
      */
-    public function registerConsumer($consumer)
+    public function registerConsumer(object $consumer): void
     {
         $type = gettype($consumer);
         if ($type !== 'object') {
@@ -107,7 +83,7 @@ class ConsumerManager
     /**
      * @param EventDispatcherInterface $eventDispatcher
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
@@ -117,7 +93,7 @@ class ConsumerManager
      *
      * @throws ConsumerException
      */
-    private function registerConsumerContainer(ConsumerContainer $consumerContainer)
+    private function registerConsumerContainer(ConsumerContainer $consumerContainer): void
     {
         $consumerName = $consumerContainer->getConsumerName();
         if (isset($this->consumerContainers[$consumerName])) {
@@ -131,7 +107,7 @@ class ConsumerManager
             );
         }
 
-        $this->channel->queue_declare($consumerName, false, true, false, false);
+        $this->channel->queue_declare($consumerName, false, true, false, false, arguments: ['x-queue-type' => 'quorum']);
         foreach ($consumerContainer->getBindings() as $binding) {
             $this->channel->queue_bind($consumerName, $this->exchangeName, $binding);
         }
@@ -148,15 +124,12 @@ class ConsumerManager
     /**
      * @param ErrorHandlerInterface $errorHandler
      */
-    public function registerErrorHandler(ErrorHandlerInterface $errorHandler)
+    public function registerErrorHandler(ErrorHandlerInterface $errorHandler): void
     {
         $this->errorHandlers->add($errorHandler);
     }
 
-    /**
-     * @param int $idleTimeout
-     */
-    public function setIdleTimeout($idleTimeout)
+    public function setIdleTimeout(int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
     }
@@ -164,7 +137,7 @@ class ConsumerManager
     /**
      * @return int
      */
-    public function getIdleTimeout()
+    public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
     }
@@ -175,7 +148,7 @@ class ConsumerManager
      *
      * @return mixed|null
      */
-    private function consume(ConsumerContainer $container, AMQPMessage $message)
+    private function consume(ConsumerContainer $container, AMQPMessage $message): mixed
     {
         $event = new ConsumerEvent($message, $container);
         $this->dispatchEvent($event, ConsumerEvents::PRE_CONSUME);
@@ -194,9 +167,9 @@ class ConsumerManager
      * @throws ConsumerContainerException
      * @return mixed|null
      */
-    private function invoke(ConsumerContainer $consumerContainer, AMQPMessage $message)
+    private function invoke(ConsumerContainer $consumerContainer, AMQPMessage $message): mixed
     {
-        $payload = $this->serializer->deserialize($message->body, $consumerContainer->getMessageClass(), 'json');
+        $payload = $this->serializer->deserialize($message->getBody(), $consumerContainer->getMessageClass(), 'json');
 
         try {
             $result = $consumerContainer->invoke($payload);

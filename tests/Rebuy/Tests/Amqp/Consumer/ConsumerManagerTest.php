@@ -65,28 +65,6 @@ class ConsumerManagerTest extends TestCase
     /**
      * @test
      */
-    public function register_consumer_with_string_parameter_should_throw_exception()
-    {
-        $this->expectException(ConsumerException::class);
-        $this->expectExceptionMessage('Expected argument of type "object", "string" given');
-
-        $this->manager->registerConsumer('string');
-    }
-
-    /**
-     * @test
-     */
-    public function register_consumer_with_int_parameter_should_throw_exception()
-    {
-        $this->expectException(ConsumerException::class);
-        $this->expectExceptionMessage('Expected argument of type "object", "integer" given');
-
-        $this->manager->registerConsumer(12);
-    }
-
-    /**
-     * @test
-     */
     public function register_consumer_should_declare_queue()
     {
         $consumer = new stdClass();
@@ -99,7 +77,7 @@ class ConsumerManagerTest extends TestCase
 
         $this->manager->registerConsumer($consumer);
 
-        $this->channel->queue_declare('myName', false, true, false, false)->shouldHaveBeenCalled();
+        $this->channel->queue_declare('myName', false, true, false, false, false, ['x-queue-type' => 'quorum'])->shouldHaveBeenCalled();
     }
 
     /**
@@ -145,7 +123,7 @@ class ConsumerManagerTest extends TestCase
 
         $this->channel->basic_qos(null, 1, false)->shouldBeCalled();
         $this->channel->basic_consume($consumerName, Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
-        $this->channel->queue_declare($consumerName, Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
+        $this->channel->queue_declare($consumerName, Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
         $this->channel->queue_bind($consumerName, self::EXCHANGE_NAME, $binding1)->shouldBeCalled();
         $this->channel->queue_bind($consumerName, self::EXCHANGE_NAME, $binding2)->shouldBeCalled();
 
