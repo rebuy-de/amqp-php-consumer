@@ -20,8 +20,8 @@
     },
     "require-dev": {
         "jms/serializer": "^3.15.0",
-        "phpunit/phpunit": "^9.5.10",
-        "codeception/verify": "^2.1.1",
+        "phpunit/phpunit": "^13.1.9",
+        "codeception/verify": "^3.4.0",
         "league/statsd": "~1.5",
         "symfony/stopwatch": "^6.4|^7.4|^8.0",
         "symfony/serializer": "^6.4|^7.4|^8.0",

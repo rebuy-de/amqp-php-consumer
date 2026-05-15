@@ -2,6 +2,7 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Annotation;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
@@ -18,9 +19,7 @@ class ConsumerContainerTest extends TestCase
 
     const TEST_PREFIX = "test";
 
-    /**
-     * @test
-     */
+    #[Test]
     public function invoke_should_invoke_reflection()
     {
         $payload = new Message();
@@ -41,9 +40,7 @@ class ConsumerContainerTest extends TestCase
 
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_bindings_should_return_empty_array_if_interface_is_not_implemented()
     {
         $consumer = new ConsumerWithInvalidParameter();
@@ -55,9 +52,7 @@ class ConsumerContainerTest extends TestCase
         verify($result)->empty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_bindings_should_return_empty_array_if_parameter_count_is_not_exactly_one()
     {
         $consumer = new ConsumerWithTwoParameters();
@@ -69,9 +64,7 @@ class ConsumerContainerTest extends TestCase
         verify($result)->empty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function getRoutingKey_should_return_null_if_the_class_does_not_implement_the_MessageInterface()
     {
         $consumer = new ConsumerWithInvalidParameter();
@@ -83,9 +76,7 @@ class ConsumerContainerTest extends TestCase
         verify($result)->empty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_bindings_should_return_empty_array_parameter_is_not_a_class()
     {
         $consumer = new ConsumerWithInvalidParameter();
@@ -97,9 +88,7 @@ class ConsumerContainerTest extends TestCase
         verify($result)->empty();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_bindings_should_return_array_with_two_bindings()
     {
         $consumer = new Consumer();
@@ -112,9 +101,7 @@ class ConsumerContainerTest extends TestCase
         verify($result)->arrayCount(2);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_bindings_should_return_correct_bindings()
     {
         $consumer = new Consumer();
@@ -129,9 +116,7 @@ class ConsumerContainerTest extends TestCase
         verify($result)->arrayContains("genericMessage");
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_consumer_name_should_return_correct_name()
     {
         $consumer = new Consumer();
@@ -145,9 +130,7 @@ class ConsumerContainerTest extends TestCase
         verify($result)->equals(self::TEST_PREFIX . '-' . $consumerAnnotation->name);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function get_method_name_should_return_class_with_method_name()
     {
         $consumer = new Consumer();

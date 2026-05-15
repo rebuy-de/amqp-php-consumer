@@ -4,6 +4,7 @@ namespace Rebuy\Tests\Amqp\Consumer\Handler;
 
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,11 +22,6 @@ class LoggerHandlerTest extends TestCase
     const MESSAGE_CLASS = 'MyClass';
 
     /**
-     * @var LogHandler
-     */
-    private $handler;
-
-    /**
      * @var LoggerInterface|ObjectProphecy
      */
     private $logger;
@@ -35,6 +31,8 @@ class LoggerHandlerTest extends TestCase
      */
     private $consumerContainer;
 
+    private LogHandler $handler;
+
     protected function setUp(): void
     {
         $this->logger = $this->prophesize(LoggerInterface::class);
@@ -43,9 +41,7 @@ class LoggerHandlerTest extends TestCase
         $this->consumerContainer->getMessageClass()->willReturn(self::MESSAGE_CLASS);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handle_should_log_message_with_payload()
     {
         $exceptionMessage = "Fatal error";

@@ -5,6 +5,7 @@ namespace Rebuy\Tests\Amqp\Consumer\Handler;
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use PhpAmqpLib\Wire\AMQPTable;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -31,10 +32,7 @@ class RequeuerHandlerTest extends TestCase
      */
     private $client;
 
-    /**
-     * @var RequeuerHandler
-     */
-    private $handler;
+    private RequeuerHandler $handler;
 
     protected function setUp(): void
     {
@@ -45,9 +43,7 @@ class RequeuerHandlerTest extends TestCase
         $this->consumerContainer->getConsumerIdentification()->willReturn(self::CONSUMER_IDENTIFICATION);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handle_should_send_message_with_routing_header()
     {
         $exceptionMessage = "Fatal error";
@@ -74,9 +70,7 @@ class RequeuerHandlerTest extends TestCase
         $this->handler->handle($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handle_should_send_message_with_type_header()
     {
         $exceptionMessage = "Fatal error";
@@ -103,9 +97,7 @@ class RequeuerHandlerTest extends TestCase
         $this->handler->handle($exception);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function handle_should_use_existing_headers()
     {
         $table = new AMQPTable();

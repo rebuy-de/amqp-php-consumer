@@ -3,6 +3,7 @@
 namespace Rebuy\Tests\Amqp\Consumer;
 
 use PhpAmqpLib\Channel\AMQPChannel;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -20,11 +21,6 @@ class ConsumerManagerTest extends TestCase
     use ProphecyTrait;
 
     const EXCHANGE_NAME = 'exchange';
-
-    /**
-     * @var ConsumerManager
-     */
-    private $manager;
 
     /**
      * @var AMQPChannel|ObjectProphecy
@@ -46,6 +42,8 @@ class ConsumerManagerTest extends TestCase
      */
     private $parser;
 
+    private ConsumerManager $manager;
+
     protected function setUp(): void
     {
         $this->channel = $this->prophesize(AMQPChannel::class);
@@ -62,9 +60,7 @@ class ConsumerManagerTest extends TestCase
         $this->manager->setEventDispatcher($this->eventDispatcher->reveal());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function register_consumer_with_string_parameter_should_throw_exception()
     {
         $this->expectException(ConsumerException::class);
@@ -73,9 +69,7 @@ class ConsumerManagerTest extends TestCase
         $this->manager->registerConsumer('string');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function register_consumer_with_int_parameter_should_throw_exception()
     {
         $this->expectException(ConsumerException::class);
@@ -84,9 +78,7 @@ class ConsumerManagerTest extends TestCase
         $this->manager->registerConsumer(12);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function register_consumer_should_declare_queue()
     {
         $consumer = new stdClass();
@@ -102,9 +94,7 @@ class ConsumerManagerTest extends TestCase
         $this->channel->queue_declare('myName', false, true, false, false)->shouldHaveBeenCalled();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function register_consumer_with_same_name_should_throw_exception()
     {
         $this->expectException(ConsumerException::class);
@@ -126,9 +116,7 @@ class ConsumerManagerTest extends TestCase
         $this->manager->registerConsumer($consumer);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function register_consumer_should_bind_queues()
     {
         $consumer = new stdClass();
