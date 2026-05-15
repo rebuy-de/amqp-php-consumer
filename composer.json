@@ -26,10 +26,8 @@
         "symfony/stopwatch": "^6.4|^7.4|^8.0",
         "symfony/serializer": "^6.4|^7.4|^8.0",
         "psr/log": "^1.0",
-        "phpspec/prophecy-phpunit": "^2.0"
-    },
-    "config": {
-        "bin-dir": "bin"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.95"
     },
     "autoload": {
         "psr-4": {
@@ -48,9 +46,18 @@
         "jms/serializer": "required if you'd like to use the jms serializer",
         "symfony/serializer": "required if you'd like to use the symfony serializer"
     },
+    "scripts": {
+        "cs-fix": "vendor/bin/php-cs-fixer fix -v",
+        "cs-check": "vendor/bin/php-cs-fixer fix --dry-run --diff -vvv",
+        "phpunit": "vendor/bin/phpunit",
+        "ci": [
+            "@cs-check",
+            "@phpunit"
+        ]
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-main": "1.0-dev"
         }
     }
 }
