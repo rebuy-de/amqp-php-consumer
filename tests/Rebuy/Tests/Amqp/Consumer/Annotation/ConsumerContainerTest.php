@@ -17,10 +17,10 @@ class ConsumerContainerTest extends TestCase
 {
     use ProphecyTrait;
 
-    const TEST_PREFIX = "test";
+    public const TEST_PREFIX = 'test';
 
     #[Test]
-    public function invoke_should_invoke_reflection()
+    public function invoke_should_invoke_reflection(): void
     {
         $payload = new Message();
         $consumer = new Consumer();
@@ -37,11 +37,10 @@ class ConsumerContainerTest extends TestCase
         $container->invoke($payload);
 
         $reflectionMethod->invoke($consumer, $payload)->shouldHaveBeenCalled();
-
     }
 
     #[Test]
-    public function get_bindings_should_return_empty_array_if_interface_is_not_implemented()
+    public function get_bindings_should_return_empty_array_if_interface_is_not_implemented(): void
     {
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
@@ -53,7 +52,7 @@ class ConsumerContainerTest extends TestCase
     }
 
     #[Test]
-    public function get_bindings_should_return_empty_array_if_parameter_count_is_not_exactly_one()
+    public function get_bindings_should_return_empty_array_if_parameter_count_is_not_exactly_one(): void
     {
         $consumer = new ConsumerWithTwoParameters();
         $method = new ReflectionMethod($consumer, 'consume');
@@ -65,7 +64,7 @@ class ConsumerContainerTest extends TestCase
     }
 
     #[Test]
-    public function getRoutingKey_should_return_null_if_the_class_does_not_implement_the_MessageInterface()
+    public function getRoutingKey_should_return_null_if_the_class_does_not_implement_the_MessageInterface(): void
     {
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
@@ -77,7 +76,7 @@ class ConsumerContainerTest extends TestCase
     }
 
     #[Test]
-    public function get_bindings_should_return_empty_array_parameter_is_not_a_class()
+    public function get_bindings_should_return_empty_array_parameter_is_not_a_class(): void
     {
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'consume');
@@ -89,7 +88,7 @@ class ConsumerContainerTest extends TestCase
     }
 
     #[Test]
-    public function get_bindings_should_return_array_with_two_bindings()
+    public function get_bindings_should_return_array_with_two_bindings(): void
     {
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
@@ -102,28 +101,28 @@ class ConsumerContainerTest extends TestCase
     }
 
     #[Test]
-    public function get_bindings_should_return_correct_bindings()
+    public function get_bindings_should_return_correct_bindings(): void
     {
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
         $consumerAnnotation = new ConsumerAnnotation('name');
-        $consumerAnnotation->name = "consume-method";
+        $consumerAnnotation->name = 'consume-method';
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
         $result = $container->getBindings();
 
-        verify($result)->arrayContains("test-consume-method-genericMessage");
-        verify($result)->arrayContains("genericMessage");
+        verify($result)->arrayContains('test-consume-method-genericMessage');
+        verify($result)->arrayContains('genericMessage');
     }
 
     #[Test]
-    public function get_consumer_name_should_return_correct_name()
+    public function get_consumer_name_should_return_correct_name(): void
     {
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
         $consumerAnnotation = new ConsumerAnnotation('name');
-        $consumerAnnotation->name = "consume-method";
+        $consumerAnnotation->name = 'consume-method';
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
         $result = $container->getConsumerName();
 
@@ -131,7 +130,7 @@ class ConsumerContainerTest extends TestCase
     }
 
     #[Test]
-    public function get_method_name_should_return_class_with_method_name()
+    public function get_method_name_should_return_class_with_method_name(): void
     {
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');

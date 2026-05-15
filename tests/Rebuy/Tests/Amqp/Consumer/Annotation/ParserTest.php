@@ -7,7 +7,6 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
 use Rebuy\Amqp\Consumer\Annotation\Parser;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Consumer;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithAttributes;
@@ -20,7 +19,7 @@ use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
 class ParserTest extends TestCase
 {
     #[Test]
-    public function parser_should_parse_valid_configuration()
+    public function parser_should_parse_valid_configuration(): void
     {
         $parser = new Parser(new AnnotationReader());
         $consumer = new Consumer();
@@ -35,7 +34,7 @@ class ParserTest extends TestCase
     }
 
     #[Test]
-    public function parser_should_use_default_prefetch_count()
+    public function parser_should_use_default_prefetch_count(): void
     {
         $parser = new Parser(new AnnotationReader());
         $consumer = new Consumer();
@@ -47,7 +46,7 @@ class ParserTest extends TestCase
     }
 
     #[Test]
-    public function parser_should_use_prefetch_count_from_annotation()
+    public function parser_should_use_prefetch_count_from_annotation(): void
     {
         $parser = new Parser(new AnnotationReader());
         $consumer = new ConsumerWithPrefetchCount();
@@ -59,7 +58,7 @@ class ParserTest extends TestCase
     }
 
     #[Test]
-    public function parser_should_support_attributes()
+    public function parser_should_support_attributes(): void
     {
         $parser = new Parser(new AnnotationReader(), 'prefix');
         $consumer = new ConsumerWithAttributes();
@@ -72,7 +71,7 @@ class ParserTest extends TestCase
     }
 
     #[Test]
-    public function parser_should_not_parse_consumer_method_with_two_parameters()
+    public function parser_should_not_parse_consumer_method_with_two_parameters(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -83,7 +82,7 @@ class ParserTest extends TestCase
     }
 
     #[Test]
-    public function parser_should_not_parse_consumer_method_without_marker_interface()
+    public function parser_should_not_parse_consumer_method_without_marker_interface(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
@@ -94,7 +93,7 @@ class ParserTest extends TestCase
     }
 
     #[Test]
-    public function parser_should_throw_exception_when_name_for_consumer_is_not_set()
+    public function parser_should_throw_exception_when_name_for_consumer_is_not_set(): void
     {
         $this->expectException(AnnotationException::class);
 

@@ -17,7 +17,7 @@ class LogHandler implements ErrorHandlerInterface
         $this->logger = $logger;
     }
 
-    public function handle(ConsumerContainerException $ex)
+    public function handle(ConsumerContainerException $ex): void
     {
         $messageClass = $ex->getConsumerContainer()->getMessageClass();
         $message = sprintf('Exception [%s] occurred while processing message [%s]', $ex->getMessage(), $messageClass);

@@ -39,7 +39,7 @@ class TimingSubscriberTest extends TestCase
     }
 
     #[Test]
-    public function preConsume_with_postConsume_should_add_timing_entry()
+    public function preConsume_with_postConsume_should_add_timing_entry(): void
     {
         $timing = 2342;
         $deliveryTag = 1;

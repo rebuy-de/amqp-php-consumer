@@ -19,7 +19,7 @@ class LoggerHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    const MESSAGE_CLASS = 'MyClass';
+    public const MESSAGE_CLASS = 'MyClass';
 
     /**
      * @var LoggerInterface|ObjectProphecy
@@ -42,9 +42,9 @@ class LoggerHandlerTest extends TestCase
     }
 
     #[Test]
-    public function handle_should_log_message_with_payload()
+    public function handle_should_log_message_with_payload(): void
     {
-        $exceptionMessage = "Fatal error";
+        $exceptionMessage = 'Fatal error';
         $baseException = new Exception($exceptionMessage);
         $payloadMessage = $this->prophesize(MessageInterface::class);
 
@@ -62,7 +62,7 @@ class LoggerHandlerTest extends TestCase
                 Argument::containingString(self::MESSAGE_CLASS),
                 Argument::containingString($exceptionMessage)
             ),
-            Argument::that(function ($context) use ($baseException) {
+            Argument::that(static function ($context) use ($baseException) {
                 verify($context['exception'])->instanceOf(ConsumerContainerException::class);
                 verify($context['exception']->getPrevious())->equals($baseException);
 

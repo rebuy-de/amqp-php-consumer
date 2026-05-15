@@ -31,7 +31,7 @@ class LogSubscriberTest extends TestCase
     }
 
     #[Test]
-    public function preConsume_should_log_debug_message()
+    public function preConsume_should_log_debug_message(): void
     {
         $body = 'payload-body';
         $messageName = 'message-name';

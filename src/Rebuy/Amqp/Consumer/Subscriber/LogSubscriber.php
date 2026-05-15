@@ -14,17 +14,11 @@ class LogSubscriber implements EventSubscriberInterface
      */
     private $logger;
 
-    /**
-     * @param LoggerInterface $logger
-     */
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public static function getSubscribedEvents(): array
     {
         return [
@@ -32,14 +26,11 @@ class LogSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param ConsumerEvent $event
-     */
-    public function preConsume(ConsumerEvent $event)
+    public function preConsume(ConsumerEvent $event): void
     {
         $container = $event->getConsumerContainer();
         $message = sprintf(
-            "Processing message [%s] for consumer [%s] with payload [%s]",
+            'Processing message [%s] for consumer [%s] with payload [%s]',
             $container->getRoutingKey(),
             $container->getMethodName(),
             $event->getMessage()->body
@@ -48,4 +39,3 @@ class LogSubscriber implements EventSubscriberInterface
         $this->logger->debug($message);
     }
 }
-

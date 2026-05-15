@@ -31,8 +31,6 @@ class ConsumerContainer
     /**
      * @param string $prefix
      * @param object $obj
-     * @param ReflectionMethod $method
-     * @param Consumer $annotation
      */
     public function __construct($prefix, $obj, ReflectionMethod $method, Consumer $annotation)
     {
@@ -47,7 +45,7 @@ class ConsumerContainer
      */
     public function getBindings()
     {
-        if ($this->method->getNumberOfParameters() != 1) {
+        if (1 != $this->method->getNumberOfParameters()) {
             return [];
         }
 
@@ -71,9 +69,6 @@ class ConsumerContainer
         return sprintf('%s-%s', $this->getConsumerName(), $this->getRoutingKey());
     }
 
-    /**
-     * @return mixed
-     */
     public function getRoutingKey()
     {
         $class = $this->method->getParameters()[0]->getType()?->getName();
@@ -108,11 +103,6 @@ class ConsumerContainer
         return $this->annotation->prefetchCount;
     }
 
-    /**
-     * @param mixed $payload
-     *
-     * @return mixed
-     */
     public function invoke($payload)
     {
         return $this->method->invoke($this->obj, $payload);

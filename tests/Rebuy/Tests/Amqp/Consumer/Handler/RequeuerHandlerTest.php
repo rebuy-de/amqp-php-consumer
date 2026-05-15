@@ -20,7 +20,7 @@ class RequeuerHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    const CONSUMER_IDENTIFICATION = 'my-consumer-identification';
+    public const CONSUMER_IDENTIFICATION = 'my-consumer-identification';
 
     /**
      * @var ObjectProphecy|ConsumerContainer
@@ -44,15 +44,15 @@ class RequeuerHandlerTest extends TestCase
     }
 
     #[Test]
-    public function handle_should_send_message_with_routing_header()
+    public function handle_should_send_message_with_routing_header(): void
     {
-        $exceptionMessage = "Fatal error";
+        $exceptionMessage = 'Fatal error';
         $exception = new Exception($exceptionMessage);
         $payloadMessage = new Message();
         $amqpMessage = $this->prophesize(AMQPMessage::class);
 
         $amqpMessage->has('application_headers')->willReturn(false);
-        $amqpMessage->set('application_headers', Argument::that(function (AMQPTable $table) {
+        $amqpMessage->set('application_headers', Argument::that(static function (AMQPTable $table) {
             verify($table->getNativeData())->arrayHasKey('routing');
 
             return $table;
@@ -71,15 +71,15 @@ class RequeuerHandlerTest extends TestCase
     }
 
     #[Test]
-    public function handle_should_send_message_with_type_header()
+    public function handle_should_send_message_with_type_header(): void
     {
-        $exceptionMessage = "Fatal error";
+        $exceptionMessage = 'Fatal error';
         $exception = new Exception($exceptionMessage);
         $payloadMessage = new Message();
         $amqpMessage = $this->prophesize(AMQPMessage::class);
 
         $amqpMessage->has('application_headers')->willReturn(false);
-        $amqpMessage->set('application_headers', Argument::that(function (AMQPTable $table) {
+        $amqpMessage->set('application_headers', Argument::that(static function (AMQPTable $table) {
             verify($table->getNativeData())->arrayHasKey('type');
 
             return $table;
@@ -98,10 +98,10 @@ class RequeuerHandlerTest extends TestCase
     }
 
     #[Test]
-    public function handle_should_use_existing_headers()
+    public function handle_should_use_existing_headers(): void
     {
         $table = new AMQPTable();
-        $exceptionMessage = "Fatal error";
+        $exceptionMessage = 'Fatal error';
         $exception = new Exception($exceptionMessage);
         $payloadMessage = new Message();
         $amqpMessage = $this->prophesize(AMQPMessage::class);

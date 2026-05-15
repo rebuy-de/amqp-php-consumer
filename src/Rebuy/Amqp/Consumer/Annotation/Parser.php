@@ -21,7 +21,6 @@ class Parser
     private $prefix;
 
     /**
-     * @param Reader $reader
      * @param string $prefix
      */
     public function __construct(Reader $reader, $prefix = '')
@@ -31,7 +30,6 @@ class Parser
     }
 
     /**
-     * @param $obj
      * @return ConsumerContainer[]
      */
     public function getConsumerMethods($obj)
@@ -53,14 +51,12 @@ class Parser
     }
 
     /**
-     * @param ReflectionMethod $method
-     *
      * @throws InvalidArgumentException
      */
-    private function validateMethod(ReflectionMethod $method)
+    private function validateMethod(ReflectionMethod $method): void
     {
-        if ($method->getNumberOfParameters() != 1) {
-            throw new InvalidArgumentException("A @Consumer is only allowed to have exactly one parameter: " . $method);
+        if (1 != $method->getNumberOfParameters()) {
+            throw new InvalidArgumentException('A @Consumer is only allowed to have exactly one parameter: ' . $method);
         }
 
         $parameter = $method->getParameters()[0];
@@ -74,12 +70,11 @@ class Parser
     {
         $reflectionAttributes = $method->getAttributes();
         foreach ($reflectionAttributes as $attribute) {
-            if ($attribute->getName() === Consumer::class) {
+            if (Consumer::class === $attribute->getName()) {
                 return $attribute->newInstance();
             }
         }
 
         return $this->reader->getMethodAnnotation($method, Consumer::class);
-
     }
 }

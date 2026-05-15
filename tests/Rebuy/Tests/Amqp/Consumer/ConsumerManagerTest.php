@@ -20,7 +20,7 @@ class ConsumerManagerTest extends TestCase
 {
     use ProphecyTrait;
 
-    const EXCHANGE_NAME = 'exchange';
+    public const EXCHANGE_NAME = 'exchange';
 
     /**
      * @var AMQPChannel|ObjectProphecy
@@ -61,7 +61,7 @@ class ConsumerManagerTest extends TestCase
     }
 
     #[Test]
-    public function register_consumer_with_string_parameter_should_throw_exception()
+    public function register_consumer_with_string_parameter_should_throw_exception(): void
     {
         $this->expectException(ConsumerException::class);
         $this->expectExceptionMessage('Expected argument of type "object", "string" given');
@@ -70,7 +70,7 @@ class ConsumerManagerTest extends TestCase
     }
 
     #[Test]
-    public function register_consumer_with_int_parameter_should_throw_exception()
+    public function register_consumer_with_int_parameter_should_throw_exception(): void
     {
         $this->expectException(ConsumerException::class);
         $this->expectExceptionMessage('Expected argument of type "object", "integer" given');
@@ -79,7 +79,7 @@ class ConsumerManagerTest extends TestCase
     }
 
     #[Test]
-    public function register_consumer_should_declare_queue()
+    public function register_consumer_should_declare_queue(): void
     {
         $consumer = new stdClass();
         $container = $this->prophesize(ConsumerContainer::class);
@@ -95,7 +95,7 @@ class ConsumerManagerTest extends TestCase
     }
 
     #[Test]
-    public function register_consumer_with_same_name_should_throw_exception()
+    public function register_consumer_with_same_name_should_throw_exception(): void
     {
         $this->expectException(ConsumerException::class);
 
@@ -109,7 +109,6 @@ class ConsumerManagerTest extends TestCase
         $container2->getConsumerName()->willReturn('myName');
         $container2->getMethodName()->willReturn('OtherConsumer::method');
 
-
         $consumer = new stdClass();
         $this->parser->getConsumerMethods($consumer)->willReturn([$container->reveal(), $container2->reveal()]);
 
@@ -117,7 +116,7 @@ class ConsumerManagerTest extends TestCase
     }
 
     #[Test]
-    public function register_consumer_should_bind_queues()
+    public function register_consumer_should_bind_queues(): void
     {
         $consumer = new stdClass();
         $binding2 = 'binding2';

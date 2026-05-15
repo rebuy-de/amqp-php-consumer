@@ -6,9 +6,8 @@ class ConsumerWithPrefetchCount
 {
     /**
      * @Rebuy\Amqp\Consumer\Annotation\Consumer(name="consume", prefetchCount=100)
-     * @param Message $message
      */
-    public function consume(Message $message)
+    public function consume(Message $message): void
     {
     }
 }

@@ -6,10 +6,8 @@ class ConsumerWithInvalidAnnotation
 {
     /**
      * @Rebuy\Amqp\Consumer\Annotation\Consumer
-     *
-     * @param Message $message
      */
-    public function consume(Message $message)
+    public function consume(Message $message): void
     {
     }
 }

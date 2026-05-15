@@ -19,7 +19,7 @@ use Throwable;
 
 class ConsumerManager
 {
-    const DEFAULT_IDLE_TIMEOUT = 900;
+    public const DEFAULT_IDLE_TIMEOUT = 900;
 
     /**
      * @var ConsumerContainer[]
@@ -62,10 +62,7 @@ class ConsumerManager
     private $parser;
 
     /**
-     * @param AMQPChannel $channel
      * @param string $exchangeName
-     * @param Serializer $serializer
-     * @param Parser $parser
      */
     public function __construct(AMQPChannel $channel, $exchangeName, Serializer $serializer, Parser $parser)
     {
@@ -79,7 +76,7 @@ class ConsumerManager
         $this->parser = $parser;
     }
 
-    public function wait()
+    public function wait(): void
     {
         while (count($this->channel->callbacks)) {
             $this->channel->wait(null, false, $this->idleTimeout);
@@ -91,10 +88,10 @@ class ConsumerManager
      *
      * @throws ConsumerException
      */
-    public function registerConsumer($consumer)
+    public function registerConsumer($consumer): void
     {
         $type = gettype($consumer);
-        if ($type !== 'object') {
+        if ('object' !== $type) {
             throw new ConsumerException(sprintf('Expected argument of type "object", "%s" given', $type));
         }
 
@@ -104,31 +101,26 @@ class ConsumerManager
         }
     }
 
-    /**
-     * @param EventDispatcherInterface $eventDispatcher
-     */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher): void
     {
         $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
-     * @param ConsumerContainer $consumerContainer
-     *
      * @throws ConsumerException
      */
-    private function registerConsumerContainer(ConsumerContainer $consumerContainer)
+    private function registerConsumerContainer(ConsumerContainer $consumerContainer): void
     {
         $consumerName = $consumerContainer->getConsumerName();
         if (isset($this->consumerContainers[$consumerName])) {
             $currentConsumer = $this->consumerContainers[$consumerName];
-            throw new ConsumerException(
-                sprintf(
-                    'Can not register consumer method [%s] because the consumer method [%s] already uses that name',
-                    $consumerContainer->getMethodName(),
-                    $currentConsumer->getMethodName()
-                )
+            $message = sprintf(
+                'Can not register consumer method [%s] because the consumer method [%s] already uses that name',
+                $consumerContainer->getMethodName(),
+                $currentConsumer->getMethodName()
             );
+
+            throw new ConsumerException($message);
         }
 
         $this->channel->queue_declare($consumerName, false, true, false, false);
@@ -145,10 +137,7 @@ class ConsumerManager
         $this->consumerContainers[$consumerName] = $consumerContainer;
     }
 
-    /**
-     * @param ErrorHandlerInterface $errorHandler
-     */
-    public function registerErrorHandler(ErrorHandlerInterface $errorHandler)
+    public function registerErrorHandler(ErrorHandlerInterface $errorHandler): void
     {
         $this->errorHandlers->add($errorHandler);
     }
@@ -156,7 +145,7 @@ class ConsumerManager
     /**
      * @param int $idleTimeout
      */
-    public function setIdleTimeout($idleTimeout)
+    public function setIdleTimeout($idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
     }
@@ -170,9 +159,6 @@ class ConsumerManager
     }
 
     /**
-     * @param Annotation\ConsumerContainer $container
-     * @param AMQPMessage $message
-     *
      * @return mixed|null
      */
     private function consume(ConsumerContainer $container, AMQPMessage $message)
@@ -188,11 +174,9 @@ class ConsumerManager
     }
 
     /**
-     * @param ConsumerContainer $consumerContainer
-     * @param AMQPMessage $message
+     * @return mixed|null
      *
      * @throws ConsumerContainerException
-     * @return mixed|null
      */
     private function invoke(ConsumerContainer $consumerContainer, AMQPMessage $message)
     {
@@ -206,7 +190,7 @@ class ConsumerManager
                 throw $containerException;
             }
 
-            $this->errorHandlers->map(function (ErrorHandlerInterface $handler) use ($containerException) {
+            $this->errorHandlers->map(static function (ErrorHandlerInterface $handler) use ($containerException) {
                 $handler->handle($containerException);
             });
 
@@ -216,7 +200,7 @@ class ConsumerManager
         return $result;
     }
 
-    private function dispatchEvent(Event $event, string $eventName)
+    private function dispatchEvent(Event $event, string $eventName): void
     {
         if (null === $this->eventDispatcher) {
             return;
