@@ -12,27 +12,32 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
+        php-version: ['8.4', '8.5']
         include:
-          - php: '8.1'
-            composer: 'composer:v2'
-          - php: '8.2'
-            composer: 'composer:v2'
-          - php: '8.3'
-            composer: 'composer:v2'
+          - php-version: '8.4'
+            composer-flags: '--prefer-stable --prefer-lowest'
 
-    name: PHP ${{ matrix.php }}
+    name: PHP ${{ matrix.php-version }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php }}
-          tools: ${{ matrix.composer }}
+          php-version: ${{ matrix.php-version }}
+
+      - name: Remove dev tools to not interfere with dependencies
+        run: composer remove --dev friendsofphp/php-cs-fixer
+
+      - name: Composer cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ env.HOME }}/.composer/cache
+          key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
 
       - name: Composer install
-        run: composer install
+        run: composer update ${{ matrix.composer-flags }} --prefer-dist --no-interaction
 
       - name: PHPUnit tests
-        run: ./bin/phpunit --verbose --debug
+        run: composer phpunit --verbose --debug
