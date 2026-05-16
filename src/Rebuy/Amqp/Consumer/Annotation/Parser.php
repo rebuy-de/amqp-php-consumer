@@ -2,7 +2,6 @@
 
 namespace Rebuy\Amqp\Consumer\Annotation;
 
-use Doctrine\Common\Annotations\Reader;
 use InvalidArgumentException;
 use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use ReflectionClass;
@@ -10,29 +9,14 @@ use ReflectionMethod;
 
 class Parser
 {
-    /**
-     * @var Reader
-     */
-    private $reader;
-
-    /**
-     * @var string
-     */
-    private $prefix;
-
-    /**
-     * @param string $prefix
-     */
-    public function __construct(Reader $reader, $prefix = '')
+    public function __construct(private readonly string $prefix = '')
     {
-        $this->reader = $reader;
-        $this->prefix = $prefix;
     }
 
     /**
      * @return ConsumerContainer[]
      */
-    public function getConsumerMethods($obj)
+    public function getConsumerMethods($obj): array
     {
         $class = new ReflectionClass($obj);
         $consumerMethods = [];
@@ -68,13 +52,11 @@ class Parser
 
     private function getConsumerAnnotationOrAttribute(ReflectionMethod $method): ?Consumer
     {
-        $reflectionAttributes = $method->getAttributes();
+        $reflectionAttributes = $method->getAttributes(Consumer::class);
         foreach ($reflectionAttributes as $attribute) {
-            if (Consumer::class === $attribute->getName()) {
-                return $attribute->newInstance();
-            }
+            return $attribute->newInstance();
         }
 
-        return $this->reader->getMethodAnnotation($method, Consumer::class);
+        return null;
     }
 }

@@ -2,11 +2,11 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Stubs;
 
-class Consumer
+use Rebuy\Amqp\Consumer\Annotation\Consumer;
+
+class SimpleConsumer
 {
-    /**
-     * @Rebuy\Amqp\Consumer\Annotation\Consumer(name="consume-it")
-     */
+    #[Consumer(name: 'consume-it')]
     public function consume(Message $message): void
     {
     }

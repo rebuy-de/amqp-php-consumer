@@ -2,27 +2,24 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Annotation;
 
-use Doctrine\Common\Annotations\AnnotationException;
-use Doctrine\Common\Annotations\AnnotationReader;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Rebuy\Amqp\Consumer\Annotation\Parser;
-use Rebuy\Tests\Amqp\Consumer\Stubs\Consumer;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithAttributes;
-use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithInvalidAnnotation;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithInvalidParameter;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithPrefetchCount;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithTwoParameters;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
+use Rebuy\Tests\Amqp\Consumer\Stubs\SimpleConsumer;
 
 class ParserTest extends TestCase
 {
     #[Test]
     public function parser_should_parse_valid_configuration(): void
     {
-        $parser = new Parser(new AnnotationReader());
-        $consumer = new Consumer();
+        $parser = new Parser();
+        $consumer = new SimpleConsumer();
 
         $consumerMethods = $parser->getConsumerMethods($consumer);
 
@@ -36,8 +33,8 @@ class ParserTest extends TestCase
     #[Test]
     public function parser_should_use_default_prefetch_count(): void
     {
-        $parser = new Parser(new AnnotationReader());
-        $consumer = new Consumer();
+        $parser = new Parser();
+        $consumer = new SimpleConsumer();
 
         $consumerMethods = $parser->getConsumerMethods($consumer);
         $consumerMethod = $consumerMethods[0];
@@ -48,7 +45,7 @@ class ParserTest extends TestCase
     #[Test]
     public function parser_should_use_prefetch_count_from_annotation(): void
     {
-        $parser = new Parser(new AnnotationReader());
+        $parser = new Parser();
         $consumer = new ConsumerWithPrefetchCount();
 
         $consumerMethods = $parser->getConsumerMethods($consumer);
@@ -60,7 +57,7 @@ class ParserTest extends TestCase
     #[Test]
     public function parser_should_support_attributes(): void
     {
-        $parser = new Parser(new AnnotationReader(), 'prefix');
+        $parser = new Parser('prefix');
         $consumer = new ConsumerWithAttributes();
 
         $consumerMethods = $parser->getConsumerMethods($consumer);
@@ -75,7 +72,7 @@ class ParserTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $parser = new Parser(new AnnotationReader());
+        $parser = new Parser();
         $consumer = new ConsumerWithTwoParameters();
 
         $parser->getConsumerMethods($consumer);
@@ -86,19 +83,8 @@ class ParserTest extends TestCase
     {
         $this->expectException(InvalidArgumentException::class);
 
-        $parser = new Parser(new AnnotationReader());
+        $parser = new Parser();
         $consumer = new ConsumerWithInvalidParameter();
-
-        $parser->getConsumerMethods($consumer);
-    }
-
-    #[Test]
-    public function parser_should_throw_exception_when_name_for_consumer_is_not_set(): void
-    {
-        $this->expectException(AnnotationException::class);
-
-        $parser = new Parser(new AnnotationReader());
-        $consumer = new ConsumerWithInvalidAnnotation();
 
         $parser->getConsumerMethods($consumer);
     }

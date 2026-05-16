@@ -4,11 +4,6 @@ namespace Rebuy\Amqp\Consumer\Annotation;
 
 use Attribute;
 
-/**
- * @Annotation
- * @Target({"METHOD"})
- * @NamedArgumentConstructor
- */
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
 class Consumer
 {

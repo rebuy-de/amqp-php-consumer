@@ -7,10 +7,10 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
-use Rebuy\Tests\Amqp\Consumer\Stubs\Consumer;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithInvalidParameter;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithTwoParameters;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
+use Rebuy\Tests\Amqp\Consumer\Stubs\SimpleConsumer;
 use ReflectionMethod;
 
 class ConsumerContainerTest extends TestCase
@@ -23,7 +23,7 @@ class ConsumerContainerTest extends TestCase
     public function invoke_should_invoke_reflection(): void
     {
         $payload = new Message();
-        $consumer = new Consumer();
+        $consumer = new SimpleConsumer();
 
         $reflectionMethod = $this->prophesize(ReflectionMethod::class);
         $reflectionMethod->invoke($consumer, $payload)->willReturn('');
@@ -90,7 +90,7 @@ class ConsumerContainerTest extends TestCase
     #[Test]
     public function get_bindings_should_return_array_with_two_bindings(): void
     {
-        $consumer = new Consumer();
+        $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
@@ -103,7 +103,7 @@ class ConsumerContainerTest extends TestCase
     #[Test]
     public function get_bindings_should_return_correct_bindings(): void
     {
-        $consumer = new Consumer();
+        $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
         $consumerAnnotation = new ConsumerAnnotation('name');
@@ -118,7 +118,7 @@ class ConsumerContainerTest extends TestCase
     #[Test]
     public function get_consumer_name_should_return_correct_name(): void
     {
-        $consumer = new Consumer();
+        $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
         $consumerAnnotation = new ConsumerAnnotation('name');
@@ -132,13 +132,13 @@ class ConsumerContainerTest extends TestCase
     #[Test]
     public function get_method_name_should_return_class_with_method_name(): void
     {
-        $consumer = new Consumer();
+        $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
         $consumerAnnotation = new ConsumerAnnotation('name');
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
 
         $result = $container->getMethodName();
-        verify($result)->equals(Consumer::class . '::consume');
+        verify($result)->equals(SimpleConsumer::class . '::consume');
     }
 }
