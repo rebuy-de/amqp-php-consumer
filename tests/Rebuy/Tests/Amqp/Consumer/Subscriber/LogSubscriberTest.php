@@ -3,6 +3,7 @@
 namespace Rebuy\Tests\Amqp\Consumer\Subscriber;
 
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -21,10 +22,7 @@ class LogSubscriberTest extends TestCase
      */
     private $logger;
 
-    /**
-     * @var LogSubscriber
-     */
-    private $subscriber;
+    private LogSubscriber $subscriber;
 
     protected function setUp(): void
     {
@@ -32,10 +30,8 @@ class LogSubscriberTest extends TestCase
         $this->subscriber = new LogSubscriber($this->logger->reveal());
     }
 
-    /**
-     * @test
-     */
-    public function preConsume_should_log_debug_message()
+    #[Test]
+    public function preConsume_should_log_debug_message(): void
     {
         $body = 'payload-body';
         $messageName = 'message-name';

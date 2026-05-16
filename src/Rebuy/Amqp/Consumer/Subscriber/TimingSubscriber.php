@@ -20,20 +20,13 @@ class TimingSubscriber implements EventSubscriberInterface
      */
     private $stopwatch;
 
-    /**
-     * @param Client $statsdClient
-     * @param Stopwatch $stopwatch
-     */
     public function __construct(Client $statsdClient, Stopwatch $stopwatch)
     {
         $this->statsdClient = $statsdClient;
         $this->stopwatch = $stopwatch;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             ConsumerEvents::POST_CONSUME => 'postConsume',
@@ -41,20 +34,14 @@ class TimingSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param ConsumerEvent $args
-     */
-    public function preConsume(ConsumerEvent $args)
+    public function preConsume(ConsumerEvent $args): void
     {
         $eventName = $this->getEventName($args);
 
         $this->stopwatch->start($eventName);
     }
 
-    /**
-     * @param ConsumerEvent $args
-     */
-    public function postConsume(ConsumerEvent $args)
+    public function postConsume(ConsumerEvent $args): void
     {
         $consumerName = $args->getConsumerContainer()->getConsumerName();
         $event = $this->stopwatch->stop($this->getEventName($args));
@@ -63,8 +50,6 @@ class TimingSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * @param ConsumerEvent $args
-     *
      * @return string
      */
     private function getEventName(ConsumerEvent $args)

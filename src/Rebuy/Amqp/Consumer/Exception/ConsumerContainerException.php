@@ -2,7 +2,6 @@
 
 namespace Rebuy\Amqp\Consumer\Exception;
 
-use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
 use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Message\MessageInterface;
@@ -30,9 +29,8 @@ class ConsumerContainerException extends RuntimeException
         ConsumerContainer $consumerContainer,
         AMQPMessage $amqpMessage,
         MessageInterface $payloadMessage,
-        Throwable $e
-    )
-    {
+        Throwable $e,
+    ) {
         $this->payloadMessage = $payloadMessage;
         $this->amqpMessage = $amqpMessage;
         $this->consumerContainer = $consumerContainer;

@@ -9,20 +9,14 @@ use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 
 class RequeuerHandler implements ErrorHandlerInterface
 {
-    /**
-     * @var ClientInterface
-     */
-    private $client;
+    private ClientInterface $client;
 
-    /**
-     * @param ClientInterface $client
-     */
     public function __construct(ClientInterface $client)
     {
         $this->client = $client;
     }
 
-    public function handle(ConsumerContainerException $ex)
+    public function handle(ConsumerContainerException $ex): void
     {
         $genericMessage = $ex->getPayloadMessage();
         $routingKey = $ex->getConsumerContainer()->getConsumerIdentification();
@@ -45,8 +39,6 @@ class RequeuerHandler implements ErrorHandlerInterface
     }
 
     /**
-     * @param AMQPMessage $message
-     *
      * @return AMQPTable
      */
     private function getHeaders(AMQPMessage $message)

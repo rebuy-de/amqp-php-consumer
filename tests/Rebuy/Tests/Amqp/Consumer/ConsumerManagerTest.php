@@ -3,6 +3,7 @@
 namespace Rebuy\Tests\Amqp\Consumer;
 
 use PhpAmqpLib\Channel\AMQPChannel;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -19,12 +20,7 @@ class ConsumerManagerTest extends TestCase
 {
     use ProphecyTrait;
 
-    const EXCHANGE_NAME = 'exchange';
-
-    /**
-     * @var ConsumerManager
-     */
-    private $manager;
+    public const EXCHANGE_NAME = 'exchange';
 
     /**
      * @var AMQPChannel|ObjectProphecy
@@ -46,6 +42,8 @@ class ConsumerManagerTest extends TestCase
      */
     private $parser;
 
+    private ConsumerManager $manager;
+
     protected function setUp(): void
     {
         $this->channel = $this->prophesize(AMQPChannel::class);
@@ -62,10 +60,8 @@ class ConsumerManagerTest extends TestCase
         $this->manager->setEventDispatcher($this->eventDispatcher->reveal());
     }
 
-    /**
-     * @test
-     */
-    public function register_consumer_with_string_parameter_should_throw_exception()
+    #[Test]
+    public function register_consumer_with_string_parameter_should_throw_exception(): void
     {
         $this->expectException(ConsumerException::class);
         $this->expectExceptionMessage('Expected argument of type "object", "string" given');
@@ -73,10 +69,8 @@ class ConsumerManagerTest extends TestCase
         $this->manager->registerConsumer('string');
     }
 
-    /**
-     * @test
-     */
-    public function register_consumer_with_int_parameter_should_throw_exception()
+    #[Test]
+    public function register_consumer_with_int_parameter_should_throw_exception(): void
     {
         $this->expectException(ConsumerException::class);
         $this->expectExceptionMessage('Expected argument of type "object", "integer" given');
@@ -84,10 +78,8 @@ class ConsumerManagerTest extends TestCase
         $this->manager->registerConsumer(12);
     }
 
-    /**
-     * @test
-     */
-    public function register_consumer_should_declare_queue()
+    #[Test]
+    public function register_consumer_should_declare_queue(): void
     {
         $consumer = new stdClass();
         $container = $this->prophesize(ConsumerContainer::class);
@@ -102,10 +94,8 @@ class ConsumerManagerTest extends TestCase
         $this->channel->queue_declare('myName', false, true, false, false)->shouldHaveBeenCalled();
     }
 
-    /**
-     * @test
-     */
-    public function register_consumer_with_same_name_should_throw_exception()
+    #[Test]
+    public function register_consumer_with_same_name_should_throw_exception(): void
     {
         $this->expectException(ConsumerException::class);
 
@@ -119,17 +109,14 @@ class ConsumerManagerTest extends TestCase
         $container2->getConsumerName()->willReturn('myName');
         $container2->getMethodName()->willReturn('OtherConsumer::method');
 
-
         $consumer = new stdClass();
         $this->parser->getConsumerMethods($consumer)->willReturn([$container->reveal(), $container2->reveal()]);
 
         $this->manager->registerConsumer($consumer);
     }
 
-    /**
-     * @test
-     */
-    public function register_consumer_should_bind_queues()
+    #[Test]
+    public function register_consumer_should_bind_queues(): void
     {
         $consumer = new stdClass();
         $binding2 = 'binding2';

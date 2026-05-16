@@ -16,7 +16,7 @@ class Consumer
 
     public function __construct(
         public string $name,
-        public int $prefetchCount = self::DEFAULT_PREFETCH_COUNT
+        public int $prefetchCount = self::DEFAULT_PREFETCH_COUNT,
     ) {
     }
 }

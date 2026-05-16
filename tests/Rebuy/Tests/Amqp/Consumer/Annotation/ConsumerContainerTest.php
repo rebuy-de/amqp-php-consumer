@@ -2,6 +2,7 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Annotation;
 
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
@@ -16,12 +17,10 @@ class ConsumerContainerTest extends TestCase
 {
     use ProphecyTrait;
 
-    const TEST_PREFIX = "test";
+    public const TEST_PREFIX = 'test';
 
-    /**
-     * @test
-     */
-    public function invoke_should_invoke_reflection()
+    #[Test]
+    public function invoke_should_invoke_reflection(): void
     {
         $payload = new Message();
         $consumer = new Consumer();
@@ -38,13 +37,10 @@ class ConsumerContainerTest extends TestCase
         $container->invoke($payload);
 
         $reflectionMethod->invoke($consumer, $payload)->shouldHaveBeenCalled();
-
     }
 
-    /**
-     * @test
-     */
-    public function get_bindings_should_return_empty_array_if_interface_is_not_implemented()
+    #[Test]
+    public function get_bindings_should_return_empty_array_if_interface_is_not_implemented(): void
     {
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
@@ -55,10 +51,8 @@ class ConsumerContainerTest extends TestCase
         verify($result)->empty();
     }
 
-    /**
-     * @test
-     */
-    public function get_bindings_should_return_empty_array_if_parameter_count_is_not_exactly_one()
+    #[Test]
+    public function get_bindings_should_return_empty_array_if_parameter_count_is_not_exactly_one(): void
     {
         $consumer = new ConsumerWithTwoParameters();
         $method = new ReflectionMethod($consumer, 'consume');
@@ -69,10 +63,8 @@ class ConsumerContainerTest extends TestCase
         verify($result)->empty();
     }
 
-    /**
-     * @test
-     */
-    public function getRoutingKey_should_return_null_if_the_class_does_not_implement_the_MessageInterface()
+    #[Test]
+    public function getRoutingKey_should_return_null_if_the_class_does_not_implement_the_MessageInterface(): void
     {
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
@@ -83,10 +75,8 @@ class ConsumerContainerTest extends TestCase
         verify($result)->empty();
     }
 
-    /**
-     * @test
-     */
-    public function get_bindings_should_return_empty_array_parameter_is_not_a_class()
+    #[Test]
+    public function get_bindings_should_return_empty_array_parameter_is_not_a_class(): void
     {
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'consume');
@@ -97,10 +87,8 @@ class ConsumerContainerTest extends TestCase
         verify($result)->empty();
     }
 
-    /**
-     * @test
-     */
-    public function get_bindings_should_return_array_with_two_bindings()
+    #[Test]
+    public function get_bindings_should_return_array_with_two_bindings(): void
     {
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
@@ -112,43 +100,37 @@ class ConsumerContainerTest extends TestCase
         verify($result)->arrayCount(2);
     }
 
-    /**
-     * @test
-     */
-    public function get_bindings_should_return_correct_bindings()
+    #[Test]
+    public function get_bindings_should_return_correct_bindings(): void
     {
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
         $consumerAnnotation = new ConsumerAnnotation('name');
-        $consumerAnnotation->name = "consume-method";
+        $consumerAnnotation->name = 'consume-method';
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
         $result = $container->getBindings();
 
-        verify($result)->arrayContains("test-consume-method-genericMessage");
-        verify($result)->arrayContains("genericMessage");
+        verify($result)->arrayContains('test-consume-method-genericMessage');
+        verify($result)->arrayContains('genericMessage');
     }
 
-    /**
-     * @test
-     */
-    public function get_consumer_name_should_return_correct_name()
+    #[Test]
+    public function get_consumer_name_should_return_correct_name(): void
     {
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
         $consumerAnnotation = new ConsumerAnnotation('name');
-        $consumerAnnotation->name = "consume-method";
+        $consumerAnnotation->name = 'consume-method';
         $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
         $result = $container->getConsumerName();
 
         verify($result)->equals(self::TEST_PREFIX . '-' . $consumerAnnotation->name);
     }
 
-    /**
-     * @test
-     */
-    public function get_method_name_should_return_class_with_method_name()
+    #[Test]
+    public function get_method_name_should_return_class_with_method_name(): void
     {
         $consumer = new Consumer();
         $method = new ReflectionMethod($consumer, 'consume');

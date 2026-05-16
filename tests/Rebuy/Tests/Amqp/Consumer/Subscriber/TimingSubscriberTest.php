@@ -4,6 +4,7 @@ namespace Rebuy\Tests\Amqp\Consumer\Subscriber;
 
 use League\StatsD\Client;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -27,10 +28,7 @@ class TimingSubscriberTest extends TestCase
      */
     private $statsdClient;
 
-    /**
-     * @var TimingSubscriber
-     */
-    private $subscriber;
+    private TimingSubscriber $subscriber;
 
     protected function setUp(): void
     {
@@ -40,10 +38,8 @@ class TimingSubscriberTest extends TestCase
         $this->subscriber = new TimingSubscriber($this->statsdClient->reveal(), $this->stopwatch->reveal());
     }
 
-    /**
-     * @test
-     */
-    public function preConsume_with_postConsume_should_add_timing_entry()
+    #[Test]
+    public function preConsume_with_postConsume_should_add_timing_entry(): void
     {
         $timing = 2342;
         $deliveryTag = 1;

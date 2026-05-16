@@ -8,28 +8,26 @@
     "authors": [
         {
             "name": "Martin Parsiegla",
-            "email": "m.parsiegla@rebuy.de"
+            "email": "mp@rebuy.com"
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.4",
         "php-amqplib/php-amqplib": "^3.0.0",
         "doctrine/annotations": "^1.13.3|^2.0.1",
-        "symfony/event-dispatcher": "^6.4|^7.0",
-        "doctrine/collections": "^1.6|^2.1.2"
+        "symfony/event-dispatcher": "^6.4|^7.4|^8.0",
+        "doctrine/collections": "^1.6|^2.6|^3.0"
     },
     "require-dev": {
         "jms/serializer": "^3.15.0",
-        "phpunit/phpunit": "^9.5.10",
-        "codeception/verify": "^2.1.1",
+        "phpunit/phpunit": "^13.1.9",
+        "codeception/verify": "^3.4.0",
         "league/statsd": "~1.5",
-        "symfony/stopwatch": "^6.4|^7.0",
-        "symfony/serializer": "^6.4|^7.0",
+        "symfony/stopwatch": "^6.4|^7.4|^8.0",
+        "symfony/serializer": "^6.4|^7.4|^8.0",
         "psr/log": "^1.0",
-        "phpspec/prophecy-phpunit": "^2.0"
-    },
-    "config": {
-        "bin-dir": "bin"
+        "phpspec/prophecy-phpunit": "^2.0",
+        "friendsofphp/php-cs-fixer": "^3.95"
     },
     "autoload": {
         "psr-4": {
@@ -48,9 +46,18 @@
         "jms/serializer": "required if you'd like to use the jms serializer",
         "symfony/serializer": "required if you'd like to use the symfony serializer"
     },
+    "scripts": {
+        "cs-fix": "vendor/bin/php-cs-fixer fix -v",
+        "cs-check": "vendor/bin/php-cs-fixer fix --dry-run --diff -vvv",
+        "phpunit": "vendor/bin/phpunit",
+        "ci": [
+            "@cs-check",
+            "@phpunit"
+        ]
+    },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-main": "1.0-dev"
         }
     }
 }

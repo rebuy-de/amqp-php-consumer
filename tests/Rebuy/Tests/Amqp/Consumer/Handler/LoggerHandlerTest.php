@@ -4,6 +4,7 @@ namespace Rebuy\Tests\Amqp\Consumer\Handler;
 
 use Exception;
 use PhpAmqpLib\Message\AMQPMessage;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -18,12 +19,7 @@ class LoggerHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    const MESSAGE_CLASS = 'MyClass';
-
-    /**
-     * @var LogHandler
-     */
-    private $handler;
+    public const MESSAGE_CLASS = 'MyClass';
 
     /**
      * @var LoggerInterface|ObjectProphecy
@@ -35,6 +31,8 @@ class LoggerHandlerTest extends TestCase
      */
     private $consumerContainer;
 
+    private LogHandler $handler;
+
     protected function setUp(): void
     {
         $this->logger = $this->prophesize(LoggerInterface::class);
@@ -43,12 +41,10 @@ class LoggerHandlerTest extends TestCase
         $this->consumerContainer->getMessageClass()->willReturn(self::MESSAGE_CLASS);
     }
 
-    /**
-     * @test
-     */
-    public function handle_should_log_message_with_payload()
+    #[Test]
+    public function handle_should_log_message_with_payload(): void
     {
-        $exceptionMessage = "Fatal error";
+        $exceptionMessage = 'Fatal error';
         $baseException = new Exception($exceptionMessage);
         $payloadMessage = $this->prophesize(MessageInterface::class);
 
@@ -66,7 +62,7 @@ class LoggerHandlerTest extends TestCase
                 Argument::containingString(self::MESSAGE_CLASS),
                 Argument::containingString($exceptionMessage)
             ),
-            Argument::that(function ($context) use ($baseException) {
+            Argument::that(static function ($context) use ($baseException) {
                 verify($context['exception'])->instanceOf(ConsumerContainerException::class);
                 verify($context['exception']->getPrevious())->equals($baseException);
 
