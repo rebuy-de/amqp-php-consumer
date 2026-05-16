@@ -7,14 +7,8 @@ use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 
 class LogHandler implements ErrorHandlerInterface
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    public function __construct(LoggerInterface $logger)
+    public function __construct(private readonly LoggerInterface $logger)
     {
-        $this->logger = $logger;
     }
 
     public function handle(ConsumerContainerException $ex): void

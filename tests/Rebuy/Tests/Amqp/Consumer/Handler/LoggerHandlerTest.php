@@ -19,7 +19,7 @@ class LoggerHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public const MESSAGE_CLASS = 'MyClass';
+    public const string MESSAGE_CLASS = 'MyClass';
 
     /**
      * @var LoggerInterface|ObjectProphecy

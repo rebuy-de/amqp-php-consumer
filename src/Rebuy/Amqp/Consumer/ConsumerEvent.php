@@ -8,34 +8,18 @@ use Symfony\Contracts\EventDispatcher\Event;
 
 class ConsumerEvent extends Event
 {
-    /**
-     * @var AMQPMessage
-     */
-    private $envelope;
-
-    /**
-     * @var ConsumerContainer
-     */
-    private $consumerContainer;
-
-    public function __construct(AMQPMessage $message, ConsumerContainer $consumerContainer)
-    {
-        $this->envelope = $message;
-        $this->consumerContainer = $consumerContainer;
+    public function __construct(
+        private readonly AMQPMessage $message,
+        private readonly ConsumerContainer $consumerContainer,
+    ) {
     }
 
-    /**
-     * @return AMQPMessage
-     */
-    public function getMessage()
+    public function getMessage(): AMQPMessage
     {
-        return $this->envelope;
+        return $this->message;
     }
 
-    /**
-     * @return ConsumerContainer
-     */
-    public function getConsumerContainer()
+    public function getConsumerContainer(): ConsumerContainer
     {
         return $this->consumerContainer;
     }

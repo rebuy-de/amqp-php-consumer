@@ -6,7 +6,7 @@ use Rebuy\Amqp\Consumer\Message\MessageInterface;
 
 class Message implements MessageInterface
 {
-    public static function getRoutingKey()
+    public static function getRoutingKey(): string
     {
         return 'genericMessage';
     }

@@ -7,7 +7,7 @@ use Attribute;
 #[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
 class Consumer
 {
-    private const DEFAULT_PREFETCH_COUNT = 1;
+    private const int DEFAULT_PREFETCH_COUNT = 1;
 
     public function __construct(
         public string $name,

@@ -20,7 +20,7 @@ class RequeuerHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public const CONSUMER_IDENTIFICATION = 'my-consumer-identification';
+    public const string CONSUMER_IDENTIFICATION = 'my-consumer-identification';
 
     /**
      * @var ObjectProphecy|ConsumerContainer

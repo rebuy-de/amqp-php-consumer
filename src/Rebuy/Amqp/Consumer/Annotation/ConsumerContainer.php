@@ -2,48 +2,23 @@
 
 namespace Rebuy\Amqp\Consumer\Annotation;
 
-use Doctrine\Common\Annotations\Annotation;
 use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use ReflectionMethod;
 
 class ConsumerContainer
 {
-    /**
-     * @var ReflectionMethod
-     */
-    private $method;
-
-    /**
-     * @var Annotation
-     */
-    private $annotation;
-
-    /**
-     * @var object
-     */
-    private $obj;
-
-    /**
-     * @var string
-     */
-    private $prefix;
-
-    /**
-     * @param string $prefix
-     * @param object $obj
-     */
-    public function __construct($prefix, $obj, ReflectionMethod $method, Consumer $annotation)
-    {
-        $this->obj = $obj;
-        $this->method = $method;
-        $this->annotation = $annotation;
-        $this->prefix = $prefix;
+    public function __construct(
+        private readonly string $prefix,
+        private readonly object $obj,
+        private readonly ReflectionMethod $method,
+        private readonly Consumer $attribute,
+    ) {
     }
 
     /**
      * @return string[]
      */
-    public function getBindings()
+    public function getBindings(): array
     {
         if (1 != $this->method->getNumberOfParameters()) {
             return [];
@@ -61,15 +36,12 @@ class ConsumerContainer
         return [$this->getConsumerIdentification(), $this->getRoutingKey()];
     }
 
-    /**
-     * @return string
-     */
-    public function getConsumerIdentification()
+    public function getConsumerIdentification(): string
     {
         return sprintf('%s-%s', $this->getConsumerName(), $this->getRoutingKey());
     }
 
-    public function getRoutingKey()
+    public function getRoutingKey(): ?string
     {
         $class = $this->method->getParameters()[0]->getType()?->getName();
         if (!is_a($class, MessageInterface::class, true)) {
@@ -79,39 +51,27 @@ class ConsumerContainer
         return $class::getRoutingKey();
     }
 
-    /**
-     * @return string
-     */
-    public function getMessageClass()
+    public function getMessageClass(): ?string
     {
         return $this->method->getParameters()[0]->getType()?->getName();
     }
 
-    /**
-     * @return string
-     */
-    public function getConsumerName()
+    public function getConsumerName(): string
     {
-        return sprintf('%s-%s', $this->prefix, $this->annotation->name);
+        return sprintf('%s-%s', $this->prefix, $this->attribute->name);
     }
 
-    /**
-     * @return int
-     */
-    public function getPrefetchCount()
+    public function getPrefetchCount(): int
     {
-        return $this->annotation->prefetchCount;
+        return $this->attribute->prefetchCount;
     }
 
-    public function invoke($payload)
+    public function invoke($payload): mixed
     {
         return $this->method->invoke($this->obj, $payload);
     }
 
-    /**
-     * @return string
-     */
-    public function getMethodName()
+    public function getMethodName(): string
     {
         $className = $this->method->getDeclaringClass()->getName();
         $methodName = $this->method->getName();

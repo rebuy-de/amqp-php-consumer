@@ -17,7 +17,7 @@ class ConsumerContainerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public const TEST_PREFIX = 'test';
+    public const string TEST_PREFIX = 'test';
 
     #[Test]
     public function invoke_should_invoke_reflection(): void

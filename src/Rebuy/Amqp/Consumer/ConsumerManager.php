@@ -19,61 +19,31 @@ use Throwable;
 
 class ConsumerManager
 {
-    public const DEFAULT_IDLE_TIMEOUT = 900;
+    public const int DEFAULT_IDLE_TIMEOUT = 900;
+
+    private EventDispatcherInterface $eventDispatcher;
+
+    private int $idleTimeout = self::DEFAULT_IDLE_TIMEOUT;
 
     /**
      * @var ConsumerContainer[]
      */
-    private $consumerContainers;
+    private array $consumerContainers;
 
     /**
-     * @var Serializer
+     * @var Collection<int, ErrorHandlerInterface>
      */
-    private $serializer;
+    private Collection $errorHandlers;
 
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
-
-    /**
-     * @var AMQPChannel
-     */
-    private $channel;
-
-    /**
-     * @var string
-     */
-    private $exchangeName;
-
-    /**
-     * @var Collection
-     */
-    private $errorHandlers;
-
-    /**
-     * @var int
-     */
-    private $idleTimeout = self::DEFAULT_IDLE_TIMEOUT;
-
-    /**
-     * @var Parser
-     */
-    private $parser;
-
-    /**
-     * @param string $exchangeName
-     */
-    public function __construct(AMQPChannel $channel, $exchangeName, Serializer $serializer, Parser $parser)
-    {
-        $this->serializer = $serializer;
+    public function __construct(
+        private readonly AMQPChannel $channel,
+        private readonly string $exchangeName,
+        private readonly Serializer $serializer,
+        private readonly Parser $parser,
+    ) {
         $this->eventDispatcher = new EventDispatcher();
-        $this->channel = $channel;
-        $this->exchangeName = $exchangeName;
-
         $this->consumerContainers = [];
         $this->errorHandlers = new ArrayCollection();
-        $this->parser = $parser;
     }
 
     public function wait(): void
@@ -128,7 +98,7 @@ class ConsumerManager
             $this->channel->queue_bind($consumerName, $this->exchangeName, $binding);
         }
 
-        $this->channel->basic_qos(null, $consumerContainer->getPrefetchCount(), false);
+        $this->channel->basic_qos(0, $consumerContainer->getPrefetchCount(), false);
         $this->channel->basic_consume($consumerName, '', false, false, false, false, function (AMQPMessage $message) use ($consumerContainer) {
             $this->consume($consumerContainer, $message);
             $message->getChannel()->basic_ack($message->getDeliveryTag());
@@ -142,26 +112,17 @@ class ConsumerManager
         $this->errorHandlers->add($errorHandler);
     }
 
-    /**
-     * @param int $idleTimeout
-     */
-    public function setIdleTimeout($idleTimeout): void
+    public function setIdleTimeout(int $idleTimeout): void
     {
         $this->idleTimeout = $idleTimeout;
     }
 
-    /**
-     * @return int
-     */
-    public function getIdleTimeout()
+    public function getIdleTimeout(): int
     {
         return $this->idleTimeout;
     }
 
-    /**
-     * @return mixed|null
-     */
-    private function consume(ConsumerContainer $container, AMQPMessage $message)
+    private function consume(ConsumerContainer $container, AMQPMessage $message): mixed
     {
         $event = new ConsumerEvent($message, $container);
         $this->dispatchEvent($event, ConsumerEvents::PRE_CONSUME);
@@ -174,11 +135,9 @@ class ConsumerManager
     }
 
     /**
-     * @return mixed|null
-     *
      * @throws ConsumerContainerException
      */
-    private function invoke(ConsumerContainer $consumerContainer, AMQPMessage $message)
+    private function invoke(ConsumerContainer $consumerContainer, AMQPMessage $message): mixed
     {
         $payload = $this->serializer->deserialize($message->body, $consumerContainer->getMessageClass(), 'json');
 
@@ -202,10 +161,6 @@ class ConsumerManager
 
     private function dispatchEvent(Event $event, string $eventName): void
     {
-        if (null === $this->eventDispatcher) {
-            return;
-        }
-
         $this->eventDispatcher->dispatch($event, $eventName);
     }
 }
