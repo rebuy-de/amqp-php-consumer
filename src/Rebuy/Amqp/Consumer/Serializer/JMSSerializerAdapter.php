@@ -10,7 +10,7 @@ class JMSSerializerAdapter implements Serializer
     {
     }
 
-    public function deserialize($data, $type, $format)
+    public function deserialize(mixed $data, string $type, string $format): mixed
     {
         return $this->serializer->deserialize($data, $type, $format);
     }
