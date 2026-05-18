@@ -29,13 +29,6 @@
         "friendsofphp/php-cs-fixer": "^3.95",
         "vimeo/psalm": "^6.16"
     },
-    "replace": {
-        "symfony/polyfill-php80": "*",
-        "symfony/polyfill-php81": "*",
-        "symfony/polyfill-php82": "*",
-        "symfony/polyfill-php83": "*",
-        "symfony/polyfill-php84": "*"
-    },
     "autoload": {
         "psr-4": {
             "Rebuy\\Amqp\\Consumer\\": "src/Rebuy/Amqp/Consumer"
