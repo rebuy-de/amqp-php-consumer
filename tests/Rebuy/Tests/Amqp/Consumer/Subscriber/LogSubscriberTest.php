@@ -9,7 +9,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
-use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
+use Rebuy\Amqp\Consumer\Attribute\ConsumerContainer;
 use Rebuy\Amqp\Consumer\ConsumerEvent;
 use Rebuy\Amqp\Consumer\Subscriber\LogSubscriber;
 

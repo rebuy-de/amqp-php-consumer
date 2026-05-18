@@ -1,6 +1,6 @@
 <?php
 
-namespace Rebuy\Amqp\Consumer\Annotation;
+namespace Rebuy\Amqp\Consumer\Attribute;
 
 use InvalidArgumentException;
 use Rebuy\Amqp\Consumer\Message\MessageInterface;

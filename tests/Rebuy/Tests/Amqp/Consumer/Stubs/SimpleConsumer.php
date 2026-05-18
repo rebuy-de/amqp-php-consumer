@@ -2,7 +2,7 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Stubs;
 
-use Rebuy\Amqp\Consumer\Annotation\Consumer;
+use Rebuy\Amqp\Consumer\Attribute\Consumer;
 
 class SimpleConsumer
 {
@@ -14,7 +14,7 @@ class SimpleConsumer
         ++$this->invocationCount;
     }
 
-    public function methodWithoutAnnotation(): void
+    public function methodWithoutAttribute(): void
     {
     }
 }

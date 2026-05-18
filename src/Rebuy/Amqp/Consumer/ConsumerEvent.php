@@ -3,7 +3,7 @@
 namespace Rebuy\Amqp\Consumer;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
+use Rebuy\Amqp\Consumer\Attribute\ConsumerContainer;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class ConsumerEvent extends Event

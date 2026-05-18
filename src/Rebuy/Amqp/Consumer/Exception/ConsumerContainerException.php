@@ -3,7 +3,7 @@
 namespace Rebuy\Amqp\Consumer\Exception;
 
 use PhpAmqpLib\Message\AMQPMessage;
-use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
+use Rebuy\Amqp\Consumer\Attribute\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use RuntimeException;
 use Throwable;

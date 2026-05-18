@@ -1,11 +1,11 @@
 <?php
 
-namespace Rebuy\Tests\Amqp\Consumer\Annotation;
+namespace Rebuy\Tests\Amqp\Consumer\Attribute;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
-use Rebuy\Amqp\Consumer\Annotation\Parser;
+use Rebuy\Amqp\Consumer\Attribute\Parser;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithAttributes;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithInvalidParameter;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithPrefetchCount;
@@ -43,7 +43,7 @@ class ParserTest extends TestCase
     }
 
     #[Test]
-    public function parser_should_use_prefetch_count_from_annotation(): void
+    public function parser_should_use_prefetch_count_from_attribute(): void
     {
         $parser = new Parser();
         $consumer = new ConsumerWithPrefetchCount();

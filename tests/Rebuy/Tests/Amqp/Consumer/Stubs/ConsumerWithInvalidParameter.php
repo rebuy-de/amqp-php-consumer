@@ -2,7 +2,7 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Stubs;
 
-use Rebuy\Amqp\Consumer\Annotation\Consumer;
+use Rebuy\Amqp\Consumer\Attribute\Consumer;
 
 class ConsumerWithInvalidParameter
 {

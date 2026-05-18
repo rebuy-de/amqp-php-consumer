@@ -1,13 +1,13 @@
 <?php
 
-namespace Rebuy\Tests\Amqp\Consumer\Annotation;
+namespace Rebuy\Tests\Amqp\Consumer\Attribute;
 
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
-use Rebuy\Amqp\Consumer\Annotation\Consumer as ConsumerAnnotation;
-use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
+use Rebuy\Amqp\Consumer\Attribute\Consumer as ConsumerAttribute;
+use Rebuy\Amqp\Consumer\Attribute\ConsumerContainer;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithInvalidParameter;
 use Rebuy\Tests\Amqp\Consumer\Stubs\ConsumerWithTwoParameters;
 use Rebuy\Tests\Amqp\Consumer\Stubs\Message;
@@ -26,7 +26,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAttribute('name'));
         $container->invoke(new Message());
 
         verify($consumer->invocationCount)->equals(1);
@@ -39,7 +39,7 @@ class ConsumerContainerTest extends TestCase
         $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
 
         $this->expectException(InvalidArgumentException::class);
-        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
+        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAttribute('name'));
     }
 
     #[Test]
@@ -49,7 +49,7 @@ class ConsumerContainerTest extends TestCase
         $method = new ReflectionMethod($consumer, 'consume');
 
         $this->expectException(InvalidArgumentException::class);
-        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
+        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAttribute('name'));
     }
 
     #[Test]
@@ -59,7 +59,7 @@ class ConsumerContainerTest extends TestCase
         $method = new ReflectionMethod($consumer, 'consume');
 
         $this->expectException(InvalidArgumentException::class);
-        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
+        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAttribute('name'));
     }
 
     #[Test]
@@ -68,7 +68,7 @@ class ConsumerContainerTest extends TestCase
         $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAttribute('name'));
         $result = $container->getBindings();
 
         verify($result)->notEmpty();
@@ -81,9 +81,9 @@ class ConsumerContainerTest extends TestCase
         $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $consumerAnnotation = new ConsumerAnnotation('name');
-        $consumerAnnotation->name = 'consume-method';
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
+        $consumerAttribute = new ConsumerAttribute('name');
+        $consumerAttribute->name = 'consume-method';
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAttribute);
         $result = $container->getBindings();
 
         verify($result)->arrayContains('test-consume-method-genericMessage');
@@ -96,12 +96,12 @@ class ConsumerContainerTest extends TestCase
         $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $consumerAnnotation = new ConsumerAnnotation('name');
-        $consumerAnnotation->name = 'consume-method';
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
+        $consumerAttribute = new ConsumerAttribute('name');
+        $consumerAttribute->name = 'consume-method';
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAttribute);
         $result = $container->getConsumerName();
 
-        verify($result)->equals(self::TEST_PREFIX . '-' . $consumerAnnotation->name);
+        verify($result)->equals(self::TEST_PREFIX . '-' . $consumerAttribute->name);
     }
 
     #[Test]
@@ -110,8 +110,8 @@ class ConsumerContainerTest extends TestCase
         $consumer = new SimpleConsumer();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $consumerAnnotation = new ConsumerAnnotation('name');
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAnnotation);
+        $consumerAttribute = new ConsumerAttribute('name');
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, $consumerAttribute);
 
         $result = $container->getMethodName();
         verify($result)->equals(SimpleConsumer::class . '::consume');

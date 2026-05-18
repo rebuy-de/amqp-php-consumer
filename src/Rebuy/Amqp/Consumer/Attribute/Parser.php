@@ -1,6 +1,6 @@
 <?php
 
-namespace Rebuy\Amqp\Consumer\Annotation;
+namespace Rebuy\Amqp\Consumer\Attribute;
 
 use ReflectionClass;
 use ReflectionMethod;
@@ -19,18 +19,18 @@ class Parser
         $class = new ReflectionClass($obj);
         $consumerMethods = [];
         foreach ($class->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
-            $annotation = $this->getConsumerAnnotationOrAttribute($method);
-            if (null === $annotation) {
+            $attribute = $this->getConsumerAttribute($method);
+            if (null === $attribute) {
                 continue;
             }
 
-            $consumerMethods[] = new ConsumerContainer($this->prefix, $obj, $method, $annotation);
+            $consumerMethods[] = new ConsumerContainer($this->prefix, $obj, $method, $attribute);
         }
 
         return $consumerMethods;
     }
 
-    private function getConsumerAnnotationOrAttribute(ReflectionMethod $method): ?Consumer
+    private function getConsumerAttribute(ReflectionMethod $method): ?Consumer
     {
         $reflectionAttributes = $method->getAttributes(Consumer::class);
         foreach ($reflectionAttributes as $attribute) {
