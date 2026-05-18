@@ -4,7 +4,7 @@ namespace Rebuy\Amqp\Consumer\Attribute;
 
 use Attribute;
 
-#[Attribute(Attribute::IS_REPEATABLE | Attribute::TARGET_METHOD)]
+#[Attribute(Attribute::TARGET_METHOD)]
 class Consumer
 {
     private const int DEFAULT_PREFETCH_COUNT = 1;
