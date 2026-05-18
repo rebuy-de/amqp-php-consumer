@@ -2,18 +2,16 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Stubs;
 
+use Rebuy\Amqp\Consumer\Attribute\Consumer;
+
 class ConsumerWithInvalidParameter
 {
-    /**
-     * @Rebuy\Amqp\Consumer\Annotation\Consumer(name="consume")
-     */
+    #[Consumer(name: 'consume')]
     public function consume($message): void
     {
     }
 
-    /**
-     * @Rebuy\Amqp\Consumer\Annotation\Consumer(name="consume")
-     */
+    #[Consumer(name: 'consume')]
     public function classWithoutImplementingInterface(\stdClass $message): void
     {
     }

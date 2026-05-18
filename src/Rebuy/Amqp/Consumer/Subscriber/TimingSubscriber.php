@@ -10,20 +10,8 @@ use Symfony\Component\Stopwatch\Stopwatch;
 
 class TimingSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var Client
-     */
-    private $statsdClient;
-
-    /**
-     * @var Stopwatch
-     */
-    private $stopwatch;
-
-    public function __construct(Client $statsdClient, Stopwatch $stopwatch)
+    public function __construct(private readonly Client $statsdClient, private readonly Stopwatch $stopwatch)
     {
-        $this->statsdClient = $statsdClient;
-        $this->stopwatch = $stopwatch;
     }
 
     public static function getSubscribedEvents(): array
@@ -49,10 +37,7 @@ class TimingSubscriber implements EventSubscriberInterface
         $this->statsdClient->timing($consumerName, $event->getDuration());
     }
 
-    /**
-     * @return string
-     */
-    private function getEventName(ConsumerEvent $args)
+    private function getEventName(ConsumerEvent $args): string
     {
         $name = $args->getConsumerContainer()->getConsumerName();
         $tag = $args->getMessage()->getDeliveryTag();

@@ -4,8 +4,5 @@ namespace Rebuy\Amqp\Consumer\Message;
 
 interface MessageInterface
 {
-    /**
-     * @return string
-     */
-    public static function getRoutingKey();
+    public static function getRoutingKey(): string;
 }

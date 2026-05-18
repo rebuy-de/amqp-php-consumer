@@ -1,0 +1,17 @@
+<?php
+
+namespace Rebuy\Amqp\Consumer\Attribute;
+
+use Attribute;
+
+#[Attribute(Attribute::TARGET_METHOD)]
+class Consumer
+{
+    private const int DEFAULT_PREFETCH_COUNT = 1;
+
+    public function __construct(
+        public string $name,
+        public int $prefetchCount = self::DEFAULT_PREFETCH_COUNT,
+    ) {
+    }
+}

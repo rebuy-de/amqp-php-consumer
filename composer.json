@@ -14,7 +14,6 @@
     "require": {
         "php": "^8.4",
         "php-amqplib/php-amqplib": "^3.0.0",
-        "doctrine/annotations": "^1.13.3|^2.0.1",
         "symfony/event-dispatcher": "^6.4|^7.4|^8.0",
         "doctrine/collections": "^1.6|^2.6|^3.0"
     },
@@ -27,7 +26,15 @@
         "symfony/serializer": "^6.4|^7.4|^8.0",
         "psr/log": "^1.0",
         "phpspec/prophecy-phpunit": "^2.0",
-        "friendsofphp/php-cs-fixer": "^3.95"
+        "friendsofphp/php-cs-fixer": "^3.95",
+        "vimeo/psalm": "^6.16"
+    },
+    "replace": {
+        "symfony/polyfill-php80": "*",
+        "symfony/polyfill-php81": "*",
+        "symfony/polyfill-php82": "*",
+        "symfony/polyfill-php83": "*",
+        "symfony/polyfill-php84": "*"
     },
     "autoload": {
         "psr-4": {
@@ -50,9 +57,11 @@
         "cs-fix": "vendor/bin/php-cs-fixer fix -v",
         "cs-check": "vendor/bin/php-cs-fixer fix --dry-run --diff -vvv",
         "phpunit": "vendor/bin/phpunit",
+        "psalm": "vendor/bin/psalm",
         "ci": [
             "@cs-check",
-            "@phpunit"
+            "@phpunit",
+            "@psalm"
         ]
     },
     "extra": {

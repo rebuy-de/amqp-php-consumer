@@ -8,8 +8,8 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
-use Rebuy\Amqp\Consumer\Annotation\Parser;
+use Rebuy\Amqp\Consumer\Attribute\ConsumerContainer;
+use Rebuy\Amqp\Consumer\Attribute\Parser;
 use Rebuy\Amqp\Consumer\ConsumerManager;
 use Rebuy\Amqp\Consumer\Exception\ConsumerException;
 use Rebuy\Amqp\Consumer\Serializer\Serializer;
@@ -20,7 +20,7 @@ class ConsumerManagerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public const EXCHANGE_NAME = 'exchange';
+    public const string EXCHANGE_NAME = 'exchange';
 
     /**
      * @var AMQPChannel|ObjectProphecy
@@ -130,7 +130,7 @@ class ConsumerManagerTest extends TestCase
 
         $this->parser->getConsumerMethods($consumer)->willReturn([$containerMock]);
 
-        $this->channel->basic_qos(null, 1, false)->shouldBeCalled();
+        $this->channel->basic_qos(0, 1, false)->shouldBeCalled();
         $this->channel->basic_consume($consumerName, Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
         $this->channel->queue_declare($consumerName, Argument::any(), Argument::any(), Argument::any(), Argument::any())->shouldBeCalled();
         $this->channel->queue_bind($consumerName, self::EXCHANGE_NAME, $binding1)->shouldBeCalled();

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
+use Rebuy\Amqp\Consumer\Attribute\ConsumerContainer;
 use Rebuy\Amqp\Consumer\ClientInterface;
 use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 use Rebuy\Amqp\Consumer\Handler\RequeuerHandler;
@@ -20,7 +20,7 @@ class RequeuerHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public const CONSUMER_IDENTIFICATION = 'my-consumer-identification';
+    public const string CONSUMER_IDENTIFICATION = 'my-consumer-identification';
 
     /**
      * @var ObjectProphecy|ConsumerContainer

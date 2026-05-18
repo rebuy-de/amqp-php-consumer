@@ -10,7 +10,7 @@ use Prophecy\Argument;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
 use Psr\Log\LoggerInterface;
-use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
+use Rebuy\Amqp\Consumer\Attribute\ConsumerContainer;
 use Rebuy\Amqp\Consumer\Exception\ConsumerContainerException;
 use Rebuy\Amqp\Consumer\Handler\LogHandler;
 use Rebuy\Amqp\Consumer\Message\MessageInterface;
@@ -19,7 +19,7 @@ class LoggerHandlerTest extends TestCase
 {
     use ProphecyTrait;
 
-    public const MESSAGE_CLASS = 'MyClass';
+    public const string MESSAGE_CLASS = 'MyClass';
 
     /**
      * @var LoggerInterface|ObjectProphecy

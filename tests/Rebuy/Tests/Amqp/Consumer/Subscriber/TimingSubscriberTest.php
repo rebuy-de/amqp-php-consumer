@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
 use Prophecy\Prophecy\ObjectProphecy;
-use Rebuy\Amqp\Consumer\Annotation\ConsumerContainer;
+use Rebuy\Amqp\Consumer\Attribute\ConsumerContainer;
 use Rebuy\Amqp\Consumer\ConsumerEvent;
 use Rebuy\Amqp\Consumer\Subscriber\TimingSubscriber;
 use Symfony\Component\Stopwatch\Stopwatch;
