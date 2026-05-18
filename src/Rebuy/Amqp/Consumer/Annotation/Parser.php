@@ -2,8 +2,6 @@
 
 namespace Rebuy\Amqp\Consumer\Annotation;
 
-use InvalidArgumentException;
-use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -26,28 +24,10 @@ class Parser
                 continue;
             }
 
-            $this->validateMethod($method);
-
             $consumerMethods[] = new ConsumerContainer($this->prefix, $obj, $method, $annotation);
         }
 
         return $consumerMethods;
-    }
-
-    /**
-     * @throws InvalidArgumentException
-     */
-    private function validateMethod(ReflectionMethod $method): void
-    {
-        if (1 != $method->getNumberOfParameters()) {
-            throw new InvalidArgumentException('A @Consumer is only allowed to have exactly one parameter: ' . $method);
-        }
-
-        $parameter = $method->getParameters()[0];
-        $class = $parameter->getType()?->getName();
-        if (!is_a($class, MessageInterface::class, true)) {
-            throw new InvalidArgumentException('A @Consumer\'s parameter must implement ' . MessageInterface::class);
-        }
     }
 
     private function getConsumerAnnotationOrAttribute(ReflectionMethod $method): ?Consumer

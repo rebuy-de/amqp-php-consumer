@@ -2,6 +2,7 @@
 
 namespace Rebuy\Tests\Amqp\Consumer\Annotation;
 
+use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
@@ -22,69 +23,43 @@ class ConsumerContainerTest extends TestCase
     #[Test]
     public function invoke_should_invoke_reflection(): void
     {
-        $payload = new Message();
         $consumer = new SimpleConsumer();
+        $method = new ReflectionMethod($consumer, 'consume');
 
-        $reflectionMethod = $this->prophesize(ReflectionMethod::class);
-        $reflectionMethod->invoke($consumer, $payload)->willReturn('');
+        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
+        $container->invoke(new Message());
 
-        $container = new ConsumerContainer(
-            self::TEST_PREFIX,
-            $consumer,
-            $reflectionMethod->reveal(),
-            new ConsumerAnnotation('name')
-        );
-        $container->invoke($payload);
-
-        $reflectionMethod->invoke($consumer, $payload)->shouldHaveBeenCalled();
+        verify($consumer->invocationCount)->equals(1);
     }
 
     #[Test]
-    public function get_bindings_should_return_empty_array_if_interface_is_not_implemented(): void
+    public function constructor_should_throw_when_parameter_does_not_implement_message_interface(): void
     {
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
-        $result = $container->getBindings();
-
-        verify($result)->empty();
+        $this->expectException(InvalidArgumentException::class);
+        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
     }
 
     #[Test]
-    public function get_bindings_should_return_empty_array_if_parameter_count_is_not_exactly_one(): void
+    public function constructor_should_throw_when_method_has_more_than_one_parameter(): void
     {
         $consumer = new ConsumerWithTwoParameters();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
-        $result = $container->getBindings();
-
-        verify($result)->empty();
+        $this->expectException(InvalidArgumentException::class);
+        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
     }
 
     #[Test]
-    public function getRoutingKey_should_return_null_if_the_class_does_not_implement_the_MessageInterface(): void
-    {
-        $consumer = new ConsumerWithInvalidParameter();
-        $method = new ReflectionMethod($consumer, 'classWithoutImplementingInterface');
-
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
-        $result = $container->getRoutingKey();
-
-        verify($result)->empty();
-    }
-
-    #[Test]
-    public function get_bindings_should_return_empty_array_parameter_is_not_a_class(): void
+    public function constructor_should_throw_when_parameter_is_not_a_class(): void
     {
         $consumer = new ConsumerWithInvalidParameter();
         $method = new ReflectionMethod($consumer, 'consume');
 
-        $container = new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
-        $result = $container->getBindings();
-
-        verify($result)->empty();
+        $this->expectException(InvalidArgumentException::class);
+        new ConsumerContainer(self::TEST_PREFIX, $consumer, $method, new ConsumerAnnotation('name'));
     }
 
     #[Test]

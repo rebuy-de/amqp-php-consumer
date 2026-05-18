@@ -2,17 +2,25 @@
 
 namespace Rebuy\Amqp\Consumer\Annotation;
 
+use InvalidArgumentException;
 use Rebuy\Amqp\Consumer\Message\MessageInterface;
 use ReflectionMethod;
+use ReflectionNamedType;
 
 class ConsumerContainer
 {
+    /**
+     * @var class-string<MessageInterface>
+     */
+    private readonly string $messageClass;
+
     public function __construct(
         private readonly string $prefix,
         private readonly object $obj,
         private readonly ReflectionMethod $method,
         private readonly Consumer $attribute,
     ) {
+        $this->messageClass = $this->validateAndGetMessageClass();
     }
 
     /**
@@ -20,19 +28,6 @@ class ConsumerContainer
      */
     public function getBindings(): array
     {
-        if (1 != $this->method->getNumberOfParameters()) {
-            return [];
-        }
-
-        $class = $this->method->getParameters()[0]->getType()?->getName();
-        if (null === $class) {
-            return [];
-        }
-
-        if (!is_a($class, MessageInterface::class, true)) {
-            return [];
-        }
-
         return [$this->getConsumerIdentification(), $this->getRoutingKey()];
     }
 
@@ -41,19 +36,17 @@ class ConsumerContainer
         return sprintf('%s-%s', $this->getConsumerName(), $this->getRoutingKey());
     }
 
-    public function getRoutingKey(): ?string
+    public function getRoutingKey(): string
     {
-        $class = $this->method->getParameters()[0]->getType()?->getName();
-        if (!is_a($class, MessageInterface::class, true)) {
-            return null;
-        }
-
-        return $class::getRoutingKey();
+        return ($this->messageClass)::getRoutingKey();
     }
 
-    public function getMessageClass(): ?string
+    /**
+     * @return class-string<MessageInterface>
+     */
+    public function getMessageClass(): string
     {
-        return $this->method->getParameters()[0]->getType()?->getName();
+        return $this->messageClass;
     }
 
     public function getConsumerName(): string
@@ -77,5 +70,25 @@ class ConsumerContainer
         $methodName = $this->method->getName();
 
         return sprintf('%s::%s', $className, $methodName);
+    }
+
+    /**
+     * @return class-string<MessageInterface>
+     *
+     * @throws InvalidArgumentException
+     */
+    private function validateAndGetMessageClass(): string
+    {
+        if (1 != $this->method->getNumberOfParameters()) {
+            throw new InvalidArgumentException('A @Consumer is only allowed to have exactly one parameter: ' . $this->method);
+        }
+
+        $type = $this->method->getParameters()[0]->getType();
+        $class = $type instanceof ReflectionNamedType ? $type->getName() : null;
+        if (null === $class || !is_a($class, MessageInterface::class, true)) {
+            throw new InvalidArgumentException('A @Consumer\'s parameter must implement ' . MessageInterface::class);
+        }
+
+        return $class;
     }
 }
