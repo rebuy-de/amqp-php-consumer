@@ -6,7 +6,7 @@ There are currently two events dispatched when consuming a message:
 - ``Rebuy\Amqp\Consumer\ConsumerEvents::PRE_CONSUME``: Before the message is consumed
 - ``Rebuy\Amqp\Consumer\ConsumerEvents::POST_CONSUME``: After the message has been consumed
 
-These events are dispatched by an symfony2 event dispatcher. If you want to listen to one of these events, you have
+These events are dispatched by a symfony event dispatcher. If you want to listen to one of these events, you have
 to create a subsriber/listener, add it to the event dispatcher and set the dispatcher to the manager::
 
     $dispatcher = new Symfony\Component\EventDispatcher\EventDispatcher();

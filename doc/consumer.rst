@@ -2,52 +2,44 @@ Creating Consumers
 ==================
 
 Let's assume you have an amqp message which will be published when an order has been created. This message has
-the routing key ``order-created`` with the payload ``{"order_id": $SOME_ID}``. In this example we create a consumer
+the routing key ``order-created`` with the payload ``{"order_id": 42}``. In this example we create a consumer
 which sends an email to the customer when this message will be published.
 
 First of all, you have to create a PHP class which represents this message::
 
     namespace My\Consumer;
 
-    use JMS\Serializer\Annotation\Type;
+    use JMS\Serializer\Attribute\Type;
     use Rebuy\Amqp\Consumer\Message\MessageInterface;
 
     class OrderCreatedMessage implements MessageInterface
     {
         /**
-         * @Type("integer")
-         *
-         * @var int
+         * @var array<int>
          */
-        public $orderId;
+         #[Type('array<integer>')]
+        public array $orderId;
 
-        public static function getRoutingKey()
+        public static function getRoutingKey(): string
         {
             return 'order-created';
         }
     }
 
 .. note::
-    Since this library uses the `jms/serializer`_ component to deserialize the payload for all messages, we have
-    to define a ``@Type`` for the property ``$orderId``.
+    In this example we use the `jms/serializer`_ component to deserialize the payload for all messages, so we have to
+    define a ``#[Type]`` for the property ``$orderId``.
 
 With this message we are able to create our consumer which will send an email to the customer::
 
     class OrderConsumer
     {
-        private $orderService;
-        private $emailService;
-
-        public function __construct($orderService, $emailService)
+        public function __construct(private readonly OrderService $orderService, private readonly EmailService $emailService)
         {
-            $this->orderService = $orderService;
-            $this->emailService = $emailService;
         }
 
-        /**
-         * @Consumer(name="order-created-send-email")
-         */
-        public function sendMail(OrderCreatedMessage $message)
+        #[Consumer(name: 'order-created-send-email')]
+        public function sendMail(OrderCreatedMessage $message): void
         {
             $order = $this->orderService->loadOrder($message->orderId);
             $this->emailService->sendOrderCreatedEmail($order);
