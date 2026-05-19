@@ -1,7 +1,7 @@
 {
     "name": "rebuy/amqp-php-consumer",
-    "description": "Library for creating annotation based AMQP consumers",
-    "keywords": ["amqp", "consumer", "annotation"],
+    "description": "Library for creating attribute based AMQP consumers",
+    "keywords": ["amqp", "consumer", "attributes"],
     "minimum-stability": "stable",
     "license": "MIT",
     "type": "library",

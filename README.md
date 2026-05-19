@@ -4,14 +4,14 @@ AMQP PHP Consumer
 Introduction
 ------------
 
-This library allows you to define consumers for AMQP with [doctrine annotations](https://github.com/doctrine/annotations).
+This library allows you to define consumers for AMQP with attributes.
 For consuming messages the AMQP-Library [videlalvaro/php-amqplib](https://github.com/videlalvaro/php-amqplib) is used.
 
 Features
 --------
 
-* Define consumers based on annotations
-* Deserialize AMQP messages with the [jms/serializer](http://jmsyst.com/libs/serializer)
+* Define consumers based on attributes
+* Deserialize AMQP messages with the [jms/serializer](http://jmsyst.com/libs/serializer) or [symfony/serializer](https://symfony.com/doc/current/serializer.html)
 * Register error handlers
 * Register pre and post consume events
 

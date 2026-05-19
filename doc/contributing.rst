@@ -10,14 +10,14 @@ Testing the Library
 
 This chapter describes how to run the tests that are included with this library.
 
-First clone the repository, install the vendors, then run the tests:
+First clone the repository, install the vendors, then run the tests and static analysis:
 
 .. code-block:: bash
 
     $ git clone https://github.com/rebuy/amqp-php-consumer.git
     $ cd amqp-php-consumer
     $ composer install --dev
-    $ bin/phpunit
+    $ composer ci
 
 Building the Documentation
 --------------------------
@@ -29,4 +29,4 @@ First `install Sphinx`_, then build the docs:
     $ cd doc
     $ make html
 
-.. _install Sphinx: http://sphinx-doc.org/latest/install.html
+.. _install Sphinx: https://www.sphinx-doc.org/en/master/usage/installation.html

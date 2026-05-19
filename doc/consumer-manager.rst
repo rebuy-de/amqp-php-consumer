@@ -6,7 +6,7 @@ The consumer manager is responsible for registering a consumer and starting the 
 Create AMQP Connection
 ----------------------
 
-You need to create an AMQP connection with an AMQP channel which will then be used by the comsuner manager::
+You need to create an AMQP connection with an AMQP channel which will then be used by the consumer manager::
 
     $connection = new PhpAmqpLib\Connection\AMQPSocketConnection('localhost', 5672, 'username', 'password');
     $channel = $connection->channel();
@@ -46,21 +46,6 @@ If you'd rather want to use the symfony serializer, do the following::
 
     $serializer = new Serializer($normalizers, $encoders);
     $serializerAdapter = new SymfonySerializerAdapter($serializer);
-
-Create the Annotation Parser
-----------------------------
-
-The annotation parser is responsible for parsing all the consumer annotations and creating a ConsumerContainer.
-The container is an abstraction of the consumer method and holds all information which are necessary to consume
-the message::
-
-    $reader = new Doctrine\Common\Annotations\AnnotationReader();
-    $parser = new Rebuy\Amqp\Consumer\Annotation\Parser($reader);
-
-.. tip::
-
-    You can also use a FileCacheReader instead of the AnnotationReader. Example:
-    ``$reader = new FileCacheReader(new AnnotationReader(), '/path/to/cache');``
 
 Tying it all together
 ---------------------
